@@ -4,6 +4,7 @@ module tb_ALU;
 
 reg [15:0] A,B; // ALU 16-Bit Inputs
 reg [7:0] Op;	// Op-code selection
+reg cin;
 integer i,j;
 
 
@@ -21,11 +22,16 @@ wire [15:0] Output;
 	 .B(B),  // ALU 8-bit Inputs                 
     .Op(Op),// ALU Selection
 	 .Flags(Flags),
-    .Output(Output) // ALU 8-bit Output
+    .Output(Output), // ALU 8-bit Output
+	 .cin(cin)
 );
 
 initial begin
-
+cin = 0;
+A = 0;
+B = 0;
+/// set everything to zero
+#10;
 //for (i = 0; i <= 2** ; i=i+1)
 
 

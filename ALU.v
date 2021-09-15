@@ -1,8 +1,8 @@
-module ALU(A, B, Op, Flags, Output);
+module ALU(A, B, Op, Flags, cin, Output);
 
 input [15:0] A,B; // ALU 16-Bit Inputs
 input [7:0] Op;	// Op-code selection
-
+input cin;
 
 // Flags[0] - Carry-bit
 // Flags[1] - Low flag: 1 if Rdest operand < Rsrc as UNSIGNED numbers
@@ -19,26 +19,58 @@ parameter OR = 	8'b00000010;
 parameter CMP = 	8'b00001011;
 parameter AND = 	8'b00000001;
 parameter XOR = 	8'b00000011;
-parameter MOV = 	8'b00001101; // 
+parameter MOV = 	8'b00001101;
 parameter LSH = 	8'b10000100;
 parameter ASHU = 	8'b10000110;
 
-always @(A, B, Flags, Output, Op)
+always @(A, B, cin, Op)
 	begin
 		case(Op)
-		ADD: 								//  Add and Subtract Case
-			{Flags[0], Output} = A + B; //+ Flags[0]; // Flags[0] - Carry-bit, Can't add Flag[0] ASK SAM
-		OR:
+		//  Add and Subtract Case
+		ADD: 
+		begin		
+			{Flags[0], Output} = A + B + cin; //+ Flags[0]; // Flags[0] - Carry-bit, Can't add Flag[0] ASK SAM
+			Flags[1] = 1'bx;
+			Flags[2] = 1'bx;
+			Flags[3] = 1'bx;
+			Flags[4] = 1'bx;
+		end
+		
+		OR: 
+		begin
 			Output = A | B;
+			Flags[0] = 1'bx;
+			Flags[1] = 1'bx;
+			Flags[2] = 1'bx;
+			Flags[3] = 1'bx;
+			Flags[4] = 1'bx;
+		end
+		
 		AND:
-			Output = A & B;
+			begin
+				Output = A & B;
+				Flags[0] = 1'bx;
+				Flags[1] = 1'bx;
+				Flags[2] = 1'bx;
+				Flags[3] = 1'bx;
+				Flags[4] = 1'bx;
+			end
+			
 		XOR:
-			Output = A ^ B;
+			begin
+				Output = A ^ B;
+				Flags[0] = 1'bx;
+				Flags[1] = 1'bx;
+				Flags[2] = 1'bx;
+				Flags[3] = 1'bx;
+				Flags[4] = 1'bx;
+			end
 		CMP:
 		begin
 			//Add for checks
 			Output = A + B;
-				
+			Flags[0] = 1'bx;
+			
 			// Flags[1] - Low flag: 1 if Rdest operand < Rsrc as UNSIGNED numbers
 			if(B < A)
 				Flags[1] = 1;
@@ -64,10 +96,46 @@ always @(A, B, Flags, Output, Op)
 			else
 				Flags[4] = 0;
 		end
+		
 		LSH:
-				Output = A << $signed(B);
+			begin
+				// negative case
+				if(B[15] == 1)
+					Output = A >> (~B + 1);
+				else
+					Output = A << B;
+				
+				
+				Flags[0] = 1'bx;
+				Flags[1] = 1'bx;
+				Flags[2] = 1'bx;
+				Flags[3] = 1'bx;
+				Flags[4] = 1'bx;
+			end
+				
 		ASHU:
-				Output = $signed(A) <<< $signed(B);
+			begin
+				if(B[15] == 1)
+					Output = $signed(A) >>> (~B + 1);
+				else
+					Output = $signed(A) <<< B;
+				
+				Flags[0] = 1'bx;
+				Flags[1] = 1'bx;
+				Flags[2] = 1'bx;
+				Flags[3] = 1'bx;
+				Flags[4] = 1'bx;
+			end
+			
+		default:
+			begin
+				Output = 16'bxxxxxxxxxxxxxxxx;
+				Flags[0] = 1'bx;
+				Flags[1] = 1'bx;
+				Flags[2] = 1'bx;
+				Flags[3] = 1'bx;
+				Flags[4] = 1'bx;
+			end
 		endcase
 	end
 endmodule
