@@ -19,15 +19,15 @@ parameter OR = 	8'b00000010;
 parameter CMP = 	8'b00001011;
 parameter AND = 	8'b00000001;
 parameter XOR = 	8'b00000011;
-parameter MOV = 	8'b00001101;
+parameter MOV = 	8'b00001101; // 
 parameter LSH = 	8'b10000100;
 parameter ASHU = 	8'b10000110;
 
-always @(A,B,Flags, Output, Op)
+always @(A, B, Flags, Output, Op)
 	begin
 		case(Op)
 		ADD: 								//  Add and Subtract Case
-			{Flags[0], Output} = A + B + Flags[0]; // Flags[0] - Carry-bit
+			{Flags[0], Output} = A + B; //+ Flags[0]; // Flags[0] - Carry-bit, Can't add Flag[0] ASK SAM
 		OR:
 			Output = A | B;
 		AND:
