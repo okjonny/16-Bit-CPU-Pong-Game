@@ -159,6 +159,16 @@ else
 //$display("A:%b B:%b Out:%b", A, B, Output);
 #5;
 
+A = 65535;
+B = 1;
+Op = 8'b00000010;
+#5;
+if(Output == 16'b1111111111111111)
+	$display("OR 3 - Passed");
+else
+	$display("Out:%b", Output);
+
+
 // AND Test
 A = 40;
 B = 100;
@@ -181,6 +191,29 @@ else
 	$display("Out:%b", Output);
 #5;
 
+
+// XOR 2
+A = 0;
+B = 100;
+Op = 8'b00000011;
+#5;
+if(Output == 16'b0000000001100100)
+	$display("XOR 2 - Passed");
+else
+	$display("Out:%b", Output);
+#5;
+
+
+// XOR 3
+A = 100;
+B = 100;
+Op = 8'b00000011;
+#5;
+if(Output == 16'b0000000000000000)
+	$display("XOR 3 - Passed");
+else
+	$display("Out:%b", Output);
+#5;
 
 // ADD
 A = 65535;
@@ -227,7 +260,18 @@ else
 	$display("Out:%b", Output);
 #5;
 
-//ASHU 1
+// LSH 3
+A = 16'b0000000000000001;
+B = 16;
+Op = 8'b10000100;
+#5;
+if(Output == 16'b0000000000000000)
+	$display("LSH 3 - Passed");
+else
+	$display("Out:%b", Output);
+#5;
+
+// ASHU 1
 A = 16'b0001000000100001;
 B = 16'b0000000000000000;
 Op = 8'b10000110;
@@ -238,7 +282,7 @@ else
 	$display("Out:%b", Output);
 #5;
 
-//ASHU 2
+// ASHU 2
 A = 16'b0001000000100001;
 B = 16'b0000000000000001;
 Op = 8'b10000110;
@@ -249,7 +293,7 @@ else
 	$display("Out:%b", Output);
 #5;
 
-//ASHU 3
+// ASHU 3
 A = 16'b0001000000100001;
 B = 16'b0000000000000111;
 Op = 8'b10000110;
