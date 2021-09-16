@@ -21,9 +21,9 @@ output [6:0] Hex_output_1, Hex_output_2, Hex_output_3, Hex_output_4;
 );
 
 hexTo7Seg first(.x(ALU_output[15:12]),.z(Hex_output_1));
-hexTo7Seg second(.x(ALU_output[15:12]),.z(Hex_output_2));
-hexTo7Seg third(.x(ALU_output[15:12]),.z(Hex_output_3));
-hexTo7Seg fourth(.x(ALU_output[15:12]),.z(Hex_output_4));
+hexTo7Seg second(.x(ALU_output[11:8]),.z(Hex_output_2));
+hexTo7Seg third(.x(ALU_output[7:4]),.z(Hex_output_3));
+hexTo7Seg fourth(.x(ALU_output[3:0]),.z(Hex_output_4));
 
 
 endmodule
