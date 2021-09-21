@@ -30,110 +30,65 @@ initial begin
 cin = 0;
 A = 0;
 B = 0;
-/// set everything to zero
+// set everything to zero
 #10;
-//for (i = 0; i <= 2** ; i=i+1)
+// cmp tests
+// Flags[1] - Low flag: 1 if Rb operand < Ra as UNSIGNED numbers
+// Should overflow
+A = 12;
+B = 10;
+Op = 8'b00001011;
+#5
+$display("Should Overflow Op:%b A:%b B:%b Output: %b Flags:%b", Op, A, B, Output, Flags);
+#5;
+//Should not overflow
+A = 8;
+B = 10;
+Op = 8'b00001011;
+#5
+$display("No Overflow Op:%b A:%b B:%b Output: %b Flags:%b", Op, A, B, Output, Flags);
+#5;
 
+//Equality
+A = 3;
+B = 3;
+Op = 8'b00001011;
+#5
+$display("EqualOp:%b A:%b B:%b Output: %b Flags:%b", Op, A, B, Output, Flags);
+#5;
 
-//// Flags[1] - Low flag: 1 if Rb operand < Ra as UNSIGNED numbers
-////Should overflow
-//A = 12;
-//B = 10;
-//Op = 8'b00001011;
-//#5
-//$display("Should Overflow Op:%b A:%b B:%b Output: %b Flags:%b", Op, A, B, Output, Flags);
-//#5;
-////Should not overflow
-//A = 8;
-//B = 10;
-//Op = 8'b00001011;
-//#5
-//$display("No Overflow Op:%b A:%b B:%b Output: %b Flags:%b", Op, A, B, Output, Flags);
-//#5;
-//
-//
-////Equality
-//A = 3;
-//B = 3;
-//Op = 8'b00001011;
-//#5
-//$display("EqualOp:%b A:%b B:%b Output: %b Flags:%b", Op, A, B, Output, Flags);
-//#5;
-//
-////Arithmetic Overflow
-////Two negatives
-//A = $signed(16'b1111111111111111);
-//B = $signed(16'b1111111111111111);
-//Op = 8'b00001011;
-//#5
-//$display("Two Negatives Op:%b A:%b B:%b Output: %b Flags:%b", Op, A, B, Output, Flags);
-//#5;
-////Two positives
-//A = 32767;
-//B = 32766;
-//Op = 8'b00001011;
-//#5
-//$display("Two Postives Op:%b A:%b B:%b Output: %b Flags:%b", Op, A, B, Output, Flags);
-//#5;
-//
-//// Flags[4] - N: Negative bit (1 if Rdest < Rsrc) as SIGNED numbers
-////Should overflow
-//A = 12;
-//B = -10;
-//Op = 8'b00001011;
-//#5
-//$display("SIGNED Should Overflow Op:%b A:%b B:%b Output: %b Flags:%b", Op, A, B, Output, Flags);
-//#5;
-////Should not overflow
-//A = -8;
-//B = 10;
-//Op = 8'b00001011;
-//#5
-//$display("SIGNED No Overflow Op:%b A:%b B:%b Output: %b Flags:%b", Op, A, B, Output, Flags);
-//#5;
+//Arithmetic Overflow
+//Two negatives
+A = $signed(16'b1111111111111111);
+B = $signed(16'b1111111111111111);
+Op = 8'b00001011;
+#5
+$display("Two Negatives Op:%b A:%b B:%b Output: %b Flags:%b", Op, A, B, Output, Flags);
+#5;
+//Two positives
+A = 32767;
+B = 32766;
+Op = 8'b00001011;
+#5
+$display("Two Postives Op:%b A:%b B:%b Output: %b Flags:%b", Op, A, B, Output, Flags);
+#5;
 
+// Flags[4] - N: Negative bit (1 if Rdest < Rsrc) as SIGNED numbers
+//Should overflow
+A = 12;
+B = -10;
+Op = 8'b00001011;
+#5
+$display("SIGNED Should Overflow Op:%b A:%b B:%b Output: %b Flags:%b", Op, A, B, Output, Flags);
+#5;
 
-// OR Tests
-//Op = 8'b00000010;
-//for (i = 0; i <= 2**5; i = i + 1) begin
-//	for (j = -2**5; j >= 0; j = j + 1) begin
-//	
-//		A = i;
-//		B = j;
-//		#5;
-//		$display("A:%b B:%b Output:%b", A, B, Output);
-//
-//		if (Output != (A & B)) begin
-//		#5;
-//			$display("OR test failed.");
-//		end
-//	end
-//end
-
-
-//
-//A = 5;
-//B = 6;
-//ALU_Sel = 1;
-//#5
-//$display("A:%b B:%b ALU_Sel:%b ALU_Out:%b", A, B, ALU_Sel, ALU_Out);
-//#5;
-//
-//
-//A = 5;
-//B = 6;
-//ALU_Sel = 2;
-//#5
-//$display("A:%b B:%b ALU_Sel:%b ALU_Out:%b", A, B, ALU_Sel, ALU_Out);
-//#5;
-//
-//
-//A = 5;
-//B = 6;
-//ALU_Sel = 3;
-//#5
-//$display("A:%b B:%b ALU_Sel:%b ALU_Out:%b", A, B, ALU_Sel, ALU_Out);
-//#5;
+//Should not overflow
+A = -8;
+B = 10;
+Op = 8'b00001011;
+#5
+$display("SIGNED No Overflow Op:%b A:%b B:%b Output: %b Flags:%b", Op, A, B, Output, Flags);
+#5;
 
 // OR Test
 A = 65535;
@@ -144,8 +99,8 @@ if(Output == 16'b1111111111111111)
 	$display("OR 1 - Passed");
 else
 	$display("Out:%b", Output);
-
 #5;
+
 
 A = 0;
 B = 0;
@@ -167,7 +122,19 @@ if(Output == 16'b1111111111111111)
 	$display("OR 3 - Passed");
 else
 	$display("Out:%b", Output);
+	
+#5;	
+// OR Test
+A = -1;
+B = -1;
+Op = 8'b00000010;
+#5;
+if(Output == 16'b1111111111111111)
+	$display("OR neg - Passed");
+else
+	$display("Out:%b", Output);
 
+#5;
 
 // AND Test
 A = 40;
@@ -176,6 +143,17 @@ Op = 8'b00000001;
 #5;
 if(Output == 16'b0000000000100000)
 	$display("AND 1 - Passed");
+else
+	$display("Out:%b", Output);
+#5;
+
+// AND neg Test
+A = -1;
+B = -1;
+Op = 8'b00000001;
+#5;
+if(Output == 16'b1111111111111111)
+	$display("AND neg - Passed");
 else
 	$display("Out:%b", Output);
 #5;
@@ -215,6 +193,17 @@ else
 	$display("Out:%b", Output);
 #5;
 
+// XOR negative
+A = 100;
+B = -100;
+Op = 8'b00000011;
+#5;
+if(Output == 16'b1111111111111000)
+	$display("XOR neg - Passed");
+else
+	$display("Out:%b", Output);
+#5;
+
 // ADD
 A = 65535;
 B = 100;
@@ -233,6 +222,19 @@ Op = 8'b00000101;
 #5;
 if(Output == 16'b1111111111111111 && Flags[0] == 0)
 	$display("ADD Carry 2 - Passed");
+else
+	$display("Out:%b Carry:%b", Output, Flags[0]);
+#5;
+
+
+// ADD negative 
+A = -5;
+B = 5;
+Op = 8'b00000101;
+#5;
+
+if(Output == 16'b0000000000000000)
+	$display("ADD neg - Passed");
 else
 	$display("Out:%b Carry:%b", Output, Flags[0]);
 #5;
@@ -267,6 +269,17 @@ Op = 8'b10000100;
 #5;
 if(Output == 16'b0000000000000000)
 	$display("LSH 3 - Passed");
+else
+	$display("Out:%b", Output);
+#5;
+
+// LSH 3
+A = 16'b0000000000000001;
+B = -1;
+Op = 8'b10000100;
+#5;
+if(Output == 16'b0000000000000000)
+	$display("LSH negative - Passed");
 else
 	$display("Out:%b", Output);
 #5;
