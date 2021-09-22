@@ -1,4 +1,3 @@
-
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -19,16 +18,23 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-
+output reg [15:0] A;
+output reg [15:0] B;
+input reg controlA;
+input reg controlB;
+// how can we decide the data path? 16 to 1 mux? or mutliple muxes to 1
+MUX_2to1 reg1(.data_inA(),.out(A));
+MUX_2to1 reg2(.data_inB,.out(B));
+// each instruction run occurs by one clock 
 module Register(D_in, wEnable, reset, clk, r
     );
-	 input [3:0] D_in;
+	 input [15:0] D_in;
 	 input clk, wEnable, reset;
-	 output reg [3:0] r;
+	 output reg [15:0] r;
 	 
  always @( posedge clk )
 	begin
-	if (reset) r <= 4'b0000;
+	if (reset) r <= 16'b0000000000000000;
 	else
 		begin			
 			if (wEnable)
@@ -53,9 +59,10 @@ endmodule
 /********/
 module RegBank(ALUBus, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, regEnable, clk, reset);
 	input clk, reset;
-	input [3:0] ALUBus;
+	input [15:0] ALUBus;
 	input [15:0] regEnable;
-	output [3:0] r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15;
+	output [15:0] r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15;
+
 
 	
 Register Inst0(
