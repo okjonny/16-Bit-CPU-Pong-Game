@@ -37,8 +37,8 @@
 # -------------------------------------------------------------------------- #
 
 
-set_global_assignment -name FAMILY "MAX 10"
 set_global_assignment -name DEVICE 10M08DAF484C8G
+set_global_assignment -name FAMILY "MAX 10"
 set_global_assignment -name TOP_LEVEL_ENTITY MUX_2to1
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 20.1.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "16:04:14  SEPTEMBER 02, 2021"

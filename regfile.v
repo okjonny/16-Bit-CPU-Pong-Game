@@ -18,13 +18,17 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
+//TODO
 output reg [15:0] A;
 output reg [15:0] B;
 input reg controlA;
 input reg controlB;
 // how can we decide the data path? 16 to 1 mux? or mutliple muxes to 1
-MUX_2to1 reg1(.data_inA(),.out(A));
-MUX_2to1 reg2(.data_inB,.out(B));
+
+//TODO IMPLEMENT MUXES
+//MUX_2to1 reg1(.data_inA(),.out(A));
+//MUX_2to1 reg2(.data_inB,.out(B));
+
 // each instruction run occurs by one clock 
 module Register(D_in, wEnable, reset, clk, r
     );
@@ -62,7 +66,6 @@ module RegBank(ALUBus, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r1
 	input [15:0] ALUBus;
 	input [15:0] regEnable;
 	output [15:0] r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15;
-
 
 	
 Register Inst0(
