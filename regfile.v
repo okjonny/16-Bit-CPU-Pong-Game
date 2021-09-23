@@ -19,10 +19,10 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 //TODO
-output reg [15:0] A;
-output reg [15:0] B;
-input reg controlA;
-input reg controlB;
+//output reg [15:0] A;
+//output reg [15:0] B;
+//input reg controlA;
+//input reg controlB;
 // how can we decide the data path? 16 to 1 mux? or mutliple muxes to 1
 
 //TODO IMPLEMENT MUXES
@@ -88,7 +88,7 @@ Register Inst11(ALUBus, regEnable[11], reset, clk, r11);
 Register Inst12(ALUBus, regEnable[12], reset, clk, r12);
 Register Inst13(ALUBus, regEnable[13], reset, clk, r13);
 Register Inst14(ALUBus, regEnable[14], reset, clk, r14);
-Register Inst15(ALUBus, regEnable[15], reset, clk, r15); 
+Register Inst15(ALUBus, regEnable[15], reset, clk, r15);
 
 endmodule
 /**************/

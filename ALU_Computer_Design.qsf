@@ -39,7 +39,7 @@
 
 set_global_assignment -name DEVICE 10M08DAF484C8G
 set_global_assignment -name FAMILY "MAX 10"
-set_global_assignment -name TOP_LEVEL_ENTITY MUX_2to1
+set_global_assignment -name TOP_LEVEL_ENTITY MUX_16to1
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 20.1.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "16:04:14  SEPTEMBER 02, 2021"
 set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Lite Edition"
@@ -68,12 +68,13 @@ set_location_assignment PIN_W15 -to B_button
 set_location_assignment PIN_V16 -to Flags[0]
 set_location_assignment VREFGROUP_B6_N0 -to Flags[1]
 set_global_assignment -name VERILOG_FILE regfile.v
-set_global_assignment -name VERILOG_FILE ALU_Wrapper.v
 set_global_assignment -name VERILOG_FILE ALU.v
 set_global_assignment -name VERILOG_FILE tb_ALU.v
 set_global_assignment -name VERILOG_FILE hexTo7Seg.v
 set_global_assignment -name VERILOG_FILE ALU_Reg.v
 set_global_assignment -name VERILOG_FILE MUX_2to1.v
+set_global_assignment -name VERILOG_FILE MUX_4to1.v
+set_global_assignment -name VERILOG_FILE MUX_16to1.v
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
