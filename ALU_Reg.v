@@ -1,4 +1,4 @@
- module ALU_Reg (A_Mux_input, B_Mux_input, clk, cin, Imm_mux_input, Immediate,Reset, Reg_Enable,Tri_Enable, OP, Flags_Enable, Flag_Reg_Output);
+module ALU_Reg (A_Mux_input, B_Mux_input, clk, cin, Imm_mux_input, Immediate,Reset, Reg_Enable,Tri_Enable, OP, Flags_Enable, Flag_Reg_Output);
 input [3:0] A_Mux_input, B_Mux_input, Reg_Enable;
 wire [4:0] Flags;
 input clk, Imm_mux_input, Reset;
