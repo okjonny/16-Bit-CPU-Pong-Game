@@ -3,36 +3,55 @@
 module tb_reg;
 
 //Inputs
-reg reset, clock, enable;
-reg [15:0] r; 
-wire [15:0]out; 
-int i;
-
+reg reset, clock;
+wire [15:0] r; 
+integer i;
  
 //Outputs
- wire[15:0] r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
- wire [15:0] ALU_Bus;
-Regbank bank(.ALUBus(r),.r0(r0),.r1(r1),.r2(r2),.r3(r3),.r4(r4),.r5(r5),.r6(r6),.r7(r7),.r8(r8),.r9(r9),.r10(r10),.r11(r11),.r12(r12),.r13(r13),.r14(r14),.r15(r15),.regEnable(enable),.clk(clock),.reset(reset));
+wire[15:0] r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
+reg [15:0] ALU_Bus, enable_register;
+ 
+// Initializing Registers
+RegBank uut(.ALUBus(ALU_Bus),.r0(r0),.r1(r1),.r2(r2),.r3(r3),.r4(r4),.r5(r5),.r6(r6),.r7(r7),.r8(r8),.r9(r9),.r10(r10),.r11(r11),.r12(r12),.r13(r13),.r14(r14),.r15(r15),.regEnable(enable_register),.clk(clock),.reset(reset));
 
+always #5 clock <= ~clock;
 initial begin 
-
-ALUBus = 16'b1111000011110000; //0xF0F0
+clock = 0; #1
 
 // initialize clock/reset
-clock = 0;
-enable = 1;
-reset = 1;
-enable = 0; 
+enable_register = 0; 
+reset = 1; #1
 
-// check reset registers
-for (i = 0; i < 16; i = i + 1)
-	begin
-		$display("R[%d] = %d", i, r[i]);
-	end
+// TEST: RESET REGISTERS TO 0
+	
+
+// Test: REG ENABLE FOR r0, r15
+//enable_register[0] = 1'b1; #1
+//enable_register[15] = 1'b1; #1
+//reset = 0; #1
+//clock = 0; #1
+//clock = 1; #1
+//
+//$display("R[0] = %d, R[15] = %d", r[0], r[15]);
+//
+//
+// TEST: SET r0 = 111...111
+// Reset full cycle
+reset = 1; #1
+reset = 0; #1
+reset = 1; #1
+
+
+ALU_Bus = 16'b1111111111111111;
+enable_register[0] = 1'b1; #15
+$display("r[0] = %d", r[0]);
+
+reset = 1; #1
+reset = 0; #1
+reset = 1; #1
+
+// TEST: SET DATA IN r0
+
 end
 
-
-always #5 Clock = ~Clock; 
-
-
-endmodule
+endmodule 
