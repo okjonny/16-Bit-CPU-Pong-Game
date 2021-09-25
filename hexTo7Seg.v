@@ -1,7 +1,7 @@
 module hexTo7Seg(
 		input [3:0]x,
 		output reg [6:0]z
-		);  
+		);
 always @*
 case(x)
 	4'b0000 :			//Hexadecimal 0
