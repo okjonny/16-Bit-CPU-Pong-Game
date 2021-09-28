@@ -11,7 +11,6 @@ output [6:0] seven_seg1, seven_seg2, seven_seg3, seven_seg4;
 
 //wire [15:0] A_in, B_in; 
 wire flag_en = 1; 
-// TODO ADD MORE SHIT 
 output [4:0] flag_reg;
 //0 from register 
 // otherwise get from immediate 

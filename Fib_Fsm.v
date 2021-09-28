@@ -15,8 +15,8 @@ module Fib_Fsm(clk, reset, alu_op, muxes, regs_en, imm);
 	
 	
 	// DFF
-	always @(posedge clk)
-		if (reset)
+	always @(posedge clk, negedge reset)
+		if (~reset)
 			state <= S0;
 		else
 			state <= nextState;

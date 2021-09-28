@@ -37,12 +37,12 @@
 # -------------------------------------------------------------------------- #
 
 
-set_global_assignment -name DEVICE 5CGXFC7C7F23C8
+set_global_assignment -name DEVICE 5CSEMA5F31C6
 set_global_assignment -name FAMILY "Cyclone V"
-set_global_assignment -name TOP_LEVEL_ENTITY ALU_Reg
+set_global_assignment -name TOP_LEVEL_ENTITY Fib_Fsm
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 20.1.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "16:04:14  SEPTEMBER 02, 2021"
-set_global_assignment -name LAST_QUARTUS_VERSION "18.0.0 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
@@ -57,7 +57,7 @@ set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
-set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH tb_reg -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH FSM_tb -section_id eda_simulation
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST ON -section_id eda_simulation
 set_global_assignment -name VERILOG_FILE MUX_2to1.v
 set_global_assignment -name VERILOG_FILE ALU_Reg.v
@@ -69,11 +69,51 @@ set_global_assignment -name VERILOG_FILE Fib_Fsm.v
 set_global_assignment -name EDA_TEST_BENCH_NAME tb_reg -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_reg
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_reg -section_id tb_reg
-set_global_assignment -name EDA_TEST_BENCH_FILE tb_reg.v -section_id tb_reg
 set_global_assignment -name VERILOG_FILE RegBank.v
 set_global_assignment -name VERILOG_FILE FSM_ALU.v
 set_global_assignment -name VERILOG_FILE hexTo7Seg.v
+set_location_assignment PIN_AH28 -to seven_seg1[6]
+set_location_assignment PIN_AG28 -to seven_seg1[5]
+set_location_assignment PIN_AF28 -to seven_seg1[4]
+set_location_assignment PIN_AG27 -to seven_seg1[3]
+set_location_assignment PIN_AE28 -to seven_seg1[2]
+set_location_assignment PIN_AE27 -to seven_seg1[1]
+set_location_assignment PIN_AE26 -to seven_seg1[0]
+set_location_assignment PIN_AD27 -to seven_seg2[6]
+set_location_assignment PIN_AF30 -to seven_seg2[5]
+set_location_assignment PIN_AF29 -to seven_seg2[4]
+set_location_assignment PIN_AG30 -to seven_seg2[3]
+set_location_assignment PIN_AH30 -to seven_seg2[2]
+set_location_assignment PIN_AH29 -to seven_seg2[1]
+set_location_assignment PIN_AJ29 -to seven_seg2[0]
+set_location_assignment PIN_AC30 -to seven_seg3[6]
+set_location_assignment PIN_AC29 -to seven_seg3[5]
+set_location_assignment PIN_AD30 -to seven_seg3[4]
+set_location_assignment PIN_AC28 -to seven_seg3[3]
+set_location_assignment PIN_AD29 -to seven_seg3[2]
+set_location_assignment PIN_AE29 -to seven_seg3[1]
+set_location_assignment PIN_AB23 -to seven_seg3[0]
+set_location_assignment PIN_AB22 -to seven_seg4[6]
+set_location_assignment PIN_AB25 -to seven_seg4[5]
+set_location_assignment PIN_AB28 -to seven_seg4[4]
+set_location_assignment PIN_AC25 -to seven_seg4[3]
+set_location_assignment PIN_AD25 -to seven_seg4[2]
+set_location_assignment PIN_AC27 -to seven_seg4[1]
+set_location_assignment PIN_AD26 -to seven_seg4[0]
+set_location_assignment PIN_V16 -to flag_reg[0]
+set_location_assignment PIN_W16 -to flag_reg[1]
+set_location_assignment PIN_V17 -to flag_reg[2]
+set_location_assignment PIN_V18 -to flag_reg[3]
+set_location_assignment PIN_W17 -to flag_reg[4]
+set_location_assignment PIN_AA14 -to reset
+set_location_assignment PIN_Y16 -to clk
+set_global_assignment -name VERILOG_FILE FSM_tb.v
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name EDA_TEST_BENCH_FILE tb_reg.v -section_id tb_reg
+set_global_assignment -name EDA_TEST_BENCH_NAME FSM_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id FSM_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME FSM_tb -section_id FSM_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE FSM_tb.v -section_id FSM_tb
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
