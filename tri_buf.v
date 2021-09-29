@@ -6,6 +6,6 @@ input [15:0] D;
 
 output wire [15:0] Q;
 
-assign Q = enable ? D: 'bx;
+assign Q = enable ? D: 16'bx;
 
 endmodule 

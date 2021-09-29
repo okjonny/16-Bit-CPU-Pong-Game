@@ -22,7 +22,7 @@ MUX_16to1 B(.reg_select(B_Mux_input),.mux_output(B_mux), .r0(r0),.r1(r1),.r2(r2)
 MUX_2to1 Imm_mux(.data_inA(B_mux), .data_inB(Immediate), .control(Imm_mux_input),.out(Imm_out)); 
 tri_buf ALU_buf(.enable(Tri_Enable), .D(ALU_Out_Bus),.Q(ALU_Bus));
 
-ALU main(.A(A_mux),.B(B_mux),.Op(OP),.Flags(Flags),.cin(cin), .Output(ALU_Out_Bus));
+ALU main(.A(A_mux),.B(Imm_out),.Op(OP),.Flags(Flags),.cin(cin), .Output(ALU_Out_Bus));
 
 Five_Bit_Register Flag_reg(.D_in(Flags), .wEnable(Flags_Enable), .reset(Reset), .clk(clk), .r(Flag_Reg_Output));
 
