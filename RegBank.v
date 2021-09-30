@@ -39,7 +39,7 @@ module Register(D_in, wEnable, reset, clk, r
 	 // Asynchro. reset 
  always @( posedge clk, negedge reset)
 	begin
-	if (~reset) r <= 16'b0000000000000000;
+	if (!reset) r <= 16'b0000000000000000;
 	else
 		begin			
 			if (wEnable)

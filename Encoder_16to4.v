@@ -1,13 +1,12 @@
 module Encoder_16to4(Encoder_In, Encoder_Out);
 
 input [15:0] Encoder_In;
-reg [3:0] Encoder_Out;
+output reg [3:0] Encoder_Out;
 
 
 always @ (Encoder_In)
 begin 
 	Encoder_Out = 0;
-	if(enable) begin 
 	if(Encoder_In == 16'h0002)
 	begin 
 	Encoder_Out = 1;
@@ -68,6 +67,6 @@ begin
 	begin 
 	Encoder_Out = 15;
 	end
-end
+
 end
 endmodule

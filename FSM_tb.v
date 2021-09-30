@@ -18,7 +18,7 @@ initial begin
 		clk = 1; #1;
 		reset = 0; #1;
 		clk = 0; #1;
-//		reset = 1; #1
+		reset = 1; #1
 		
 		for (i = 0; i < 16; i = i + 1)
 		begin
