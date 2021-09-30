@@ -3,7 +3,7 @@ input [4:0] reg_select;
 input [15:0] r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15;
 output reg [15:0] out;
 
-always@(reg_select) begin
+always@(reg_select, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15) begin
 case(reg_select)
 	5'b00000: out = 16'bx;
 	5'b00001: out = r0;

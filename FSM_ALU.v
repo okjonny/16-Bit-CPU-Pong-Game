@@ -3,14 +3,11 @@ input clk, reset;
 wire [7:0] ALU_Op;
 wire [4:0] mux_controlA;
 wire [4:0] mux_controlB;
-wire [15:0] reg_enables, imm, A_in, B_in; 
-wire [15:0] r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15;
+wire [15:0] reg_enables, imm; 
 wire cin = 0;
 wire Imm_mux_input;
 wire buff_en;
- 
-wire [3:0] enable_4_reg;
-//wire [15:0] A_in, B_in; 
+wire [4:0] enable_4_reg; 
 wire flag_en = 1; 
 output [4:0] flag_reg;
 output [15:0] ALU_output;

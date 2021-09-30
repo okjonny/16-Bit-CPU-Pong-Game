@@ -13,12 +13,12 @@ integer i;
 FSM_ALU uut(.clk(clk), .reset(reset), .flag_reg(flag_reg), .ALU_output(ALU_output));
 
 initial begin
-		clk = 0; #1;
-		reset = 1; #1;
-		clk = 1; #1;
-		reset = 0; #1;
-		clk = 0; #1;
-		reset = 1; #1
+		clk = 0; #20;
+		reset = 1; #20;
+		clk = 1; #20;
+		reset = 0; #20;
+		clk = 0; #20;
+		reset = 1; #20;
 		
 		for (i = 0; i < 16; i = i + 1)
 		begin

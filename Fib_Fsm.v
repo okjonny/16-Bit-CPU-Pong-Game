@@ -26,11 +26,15 @@ module Fib_Fsm(clk, reset, alu_op, muxA, muxB, regs_en, imm, buff_en, imm_contro
 	// DFF
 	always @(posedge clk, negedge reset)begin
 		if (!reset)
-			state <= S0;
+			nextState <= S0;
 		else begin
 			case(state)
-			S0: nextState <= S1;
-			S1: nextState <= S2;
+				S0: nextState <= S1;
+				S1: nextState <= S2;
+				S2: nextState <= S3;
+				S3: nextState <= S4;
+				S4: nextState <= S5;
+				S5: nextState <= S5;
 			default: nextState <= S0;
 			endcase
 			end
@@ -42,8 +46,14 @@ module Fib_Fsm(clk, reset, alu_op, muxA, muxB, regs_en, imm, buff_en, imm_contro
 	begin
 		case (state)
 			 S0: begin alu_op = 0; muxA = 0; muxB = 0; regs_en = 0; imm = 0; buff_en = 0; imm_control = 0; end // Reset (dont write) (shows 0)
-			 S1: begin alu_op = 8'b00000101; muxA = 5'b00001; muxB = 0; regs_en = 16'b0000000000000010; imm = 16'b0000000000000001; buff_en = 1; imm_control = 1;end // addi to R1 (shows 1)
-			 S2: begin alu_op = 8'b00000101; muxes = 8'h01; regs_en = 16'h0004; imm = 16'hxxxx; end // add R2, R0, R1 (shows 1)
+			 S1: begin alu_op = 8'b00000101; muxA = 5'b00001; muxB = 5'b00000; regs_en = 16'b0000000000000010; imm = 16'b0000000000000001; buff_en = 1; imm_control = 1;end // addi to R1
+			 S2: begin alu_op = 8'b00000101; muxA = 5'b00001; muxB = 5'b00010; regs_en = 16'b0000000000000100; imm = 0; buff_en = 1; imm_control = 0;end // addi to R2
+			 S3: begin alu_op = 8'b00000101; muxA = 5'b00010; muxB = 5'b00011; regs_en = 16'b0000000000001000; imm = 0; buff_en = 1; imm_control = 0;end // addi to R3
+			 S4: begin alu_op = 8'b00000101; muxA = 5'b00011; muxB = 5'b00100; regs_en = 16'b0000000000010000; imm = 0; buff_en = 1; imm_control = 0;end // addi to R4
+			 S5: begin alu_op = 8'b00000101; muxA = 5'b00100; muxB = 5'b00101; regs_en = 16'b0000000000100000; imm = 0; buff_en = 1; imm_control = 0;end // addi to R5
+		
+
+			 
 //			 S3: begin alu_op = 8'b00000101; muxes = 8'h12; regs_en = 16'h0008; imm = 16'hxxxx; end // add R3, R1, R2 (shows 2)
 //		    S4: begin alu_op = 8'b00000101; muxes = 8'h23; regs_en = 16'h0010; imm = 16'hxxxx; end // add R4, R2, R3 (shows 3)
 //			 S5: begin alu_op = 8'b00000101; muxes = 8'h34; regs_en = 16'h0020; imm = 16'hxxxx; end // add R5, R3, R4 (shows 5)

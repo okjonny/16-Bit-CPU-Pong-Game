@@ -1,6 +1,6 @@
 module Decoder_4to16(Decode_In, Decode_Out);
 
-input [3:0]   Decode_In;
+input [4:0]   Decode_In;
 output [15:0] Decode_Out;
 
    parameter mask = 16'b0000_0000_0000_0001;
