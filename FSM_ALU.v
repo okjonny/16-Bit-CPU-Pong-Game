@@ -1,4 +1,4 @@
-module FSM_ALU(clk, reset, flag_reg, ALU_output);
+module FSM_ALU(clk, reset, flag_reg, Hex_output_1, Hex_output_2, Hex_output_3, Hex_output_4);
 input clk, reset; 
 wire [7:0] ALU_Op;
 wire [4:0] mux_controlA;
@@ -10,7 +10,8 @@ wire buff_en;
 wire [4:0] enable_4_reg; 
 wire flag_en = 1; 
 output [4:0] flag_reg;
-output [15:0] ALU_output;
+wire [15:0] ALU_output;
+output [6:0] Hex_output_1, Hex_output_2, Hex_output_3, Hex_output_4;
 
 //0 from register 
 // otherwise get from immediate 
@@ -42,5 +43,10 @@ ALU_Reg alu_register(
                 .Flags_Enable(flag_en), 
                 .Flag_Reg_Output(flag_reg),
 				    .ALU_Out_Bus(ALU_output));
+
+hexTo7Seg first(.x(ALU_output[15:12]),.z(Hex_output_4));
+hexTo7Seg second(.x(ALU_output[11:8]),.z(Hex_output_3));
+hexTo7Seg third(.x(ALU_output[7:4]),.z(Hex_output_2));
+hexTo7Seg fourth(.x(ALU_output[3:0]),.z(Hex_output_1));
 	 
 endmodule 

@@ -59,44 +59,13 @@ set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
 set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH FSM_tb -section_id eda_simulation
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST ON -section_id eda_simulation
-set_global_assignment -name EDA_TEST_BENCH_NAME tb_reg -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_reg
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_reg -section_id tb_reg
-set_location_assignment PIN_AH28 -to seven_seg1[6]
-set_location_assignment PIN_AG28 -to seven_seg1[5]
-set_location_assignment PIN_AF28 -to seven_seg1[4]
-set_location_assignment PIN_AG27 -to seven_seg1[3]
-set_location_assignment PIN_AE28 -to seven_seg1[2]
-set_location_assignment PIN_AE27 -to seven_seg1[1]
-set_location_assignment PIN_AE26 -to seven_seg1[0]
-set_location_assignment PIN_AD27 -to seven_seg2[6]
-set_location_assignment PIN_AF30 -to seven_seg2[5]
-set_location_assignment PIN_AF29 -to seven_seg2[4]
-set_location_assignment PIN_AG30 -to seven_seg2[3]
-set_location_assignment PIN_AH30 -to seven_seg2[2]
-set_location_assignment PIN_AH29 -to seven_seg2[1]
-set_location_assignment PIN_AJ29 -to seven_seg2[0]
-set_location_assignment PIN_AC30 -to seven_seg3[6]
-set_location_assignment PIN_AC29 -to seven_seg3[5]
-set_location_assignment PIN_AD30 -to seven_seg3[4]
-set_location_assignment PIN_AC28 -to seven_seg3[3]
-set_location_assignment PIN_AD29 -to seven_seg3[2]
-set_location_assignment PIN_AE29 -to seven_seg3[1]
-set_location_assignment PIN_AB23 -to seven_seg3[0]
-set_location_assignment PIN_AB22 -to seven_seg4[6]
-set_location_assignment PIN_AB25 -to seven_seg4[5]
-set_location_assignment PIN_AB28 -to seven_seg4[4]
-set_location_assignment PIN_AC25 -to seven_seg4[3]
-set_location_assignment PIN_AD25 -to seven_seg4[2]
-set_location_assignment PIN_AC27 -to seven_seg4[1]
-set_location_assignment PIN_AD26 -to seven_seg4[0]
 set_location_assignment PIN_V16 -to flag_reg[0]
 set_location_assignment PIN_W16 -to flag_reg[1]
 set_location_assignment PIN_V17 -to flag_reg[2]
 set_location_assignment PIN_V18 -to flag_reg[3]
 set_location_assignment PIN_W17 -to flag_reg[4]
-set_location_assignment PIN_AA14 -to reset
-set_location_assignment PIN_Y16 -to clk
+set_location_assignment PIN_AA15 -to reset
+set_location_assignment PIN_AA14 -to clk
 set_global_assignment -name EDA_TEST_BENCH_NAME FSM_tb -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id FSM_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME FSM_tb -section_id FSM_tb
@@ -118,6 +87,33 @@ set_global_assignment -name VERILOG_FILE FSM_tb.v
 set_global_assignment -name VERILOG_FILE wrapper_FSM_ALU.v
 set_global_assignment -name VERILOG_FILE alu.v
 set_global_assignment -name VERILOG_FILE Encoder_16to4.v
-set_global_assignment -name EDA_TEST_BENCH_FILE tb_reg.v -section_id tb_reg
 set_global_assignment -name EDA_TEST_BENCH_FILE FSM_tb.v -section_id FSM_tb
+set_location_assignment PIN_AH28 -to Hex_output_1[6]
+set_location_assignment PIN_AG28 -to Hex_output_1[5]
+set_location_assignment PIN_AF28 -to Hex_output_1[4]
+set_location_assignment PIN_AG27 -to Hex_output_1[3]
+set_location_assignment PIN_AE28 -to Hex_output_1[2]
+set_location_assignment PIN_AE27 -to Hex_output_1[1]
+set_location_assignment PIN_AE26 -to Hex_output_1[0]
+set_location_assignment PIN_AD27 -to Hex_output_2[6]
+set_location_assignment PIN_AF30 -to Hex_output_2[5]
+set_location_assignment PIN_AF29 -to Hex_output_2[4]
+set_location_assignment PIN_AG30 -to Hex_output_2[3]
+set_location_assignment PIN_AH30 -to Hex_output_2[2]
+set_location_assignment PIN_AH29 -to Hex_output_2[1]
+set_location_assignment PIN_AJ29 -to Hex_output_2[0]
+set_location_assignment PIN_AC30 -to Hex_output_3[6]
+set_location_assignment PIN_AC29 -to Hex_output_3[5]
+set_location_assignment PIN_AD30 -to Hex_output_3[4]
+set_location_assignment PIN_AC28 -to Hex_output_3[3]
+set_location_assignment PIN_AD29 -to Hex_output_3[2]
+set_location_assignment PIN_AE29 -to Hex_output_3[1]
+set_location_assignment PIN_AB23 -to Hex_output_3[0]
+set_location_assignment PIN_AB22 -to Hex_output_4[6]
+set_location_assignment PIN_AB25 -to Hex_output_4[5]
+set_location_assignment PIN_AB28 -to Hex_output_4[4]
+set_location_assignment PIN_AC25 -to Hex_output_4[3]
+set_location_assignment PIN_AD25 -to Hex_output_4[2]
+set_location_assignment PIN_AC27 -to Hex_output_4[1]
+set_location_assignment PIN_AD26 -to Hex_output_4[0]
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

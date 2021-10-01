@@ -45,7 +45,7 @@ module Fib_Fsm(clk, reset, alu_op, muxA, muxB, regs_en, imm, buff_en, imm_contro
 	always @(state)
 	begin
 		case (state)
-			 S0: begin alu_op = 0; muxA = 0; muxB = 0; regs_en = 0; imm = 0; buff_en = 0; imm_control = 0; end // Reset (dont write) (shows 0)
+			 S0: begin alu_op = 0; muxA = 0; muxB = 0; regs_en = 0; imm = 0; buff_en = 1	; imm_control = 0; end // Reset (dont write) (shows 0)
 			 S1: begin alu_op = 8'b00000101; muxA = 5'b00001; muxB = 5'b00000; regs_en = 16'b0000000000000010; imm = 16'b0000000000000001; buff_en = 1; imm_control = 1;end // addi to R1
 			 S2: begin alu_op = 8'b00000101; muxA = 5'b00001; muxB = 5'b00010; regs_en = 16'b0000000000000100; imm = 0; buff_en = 1; imm_control = 0;end // addi to R2
 			 S3: begin alu_op = 8'b00000101; muxA = 5'b00010; muxB = 5'b00011; regs_en = 16'b0000000000001000; imm = 0; buff_en = 1; imm_control = 0;end // addi to R3

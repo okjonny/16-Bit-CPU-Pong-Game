@@ -4,7 +4,7 @@ module MUX_2to1(input wire [15:0] data_inA, input wire [15:0] data_inB, input wi
 
 always@(*) begin
 
-out = control ? data_inA : data_inB;
+out = control ? data_inB : data_inA;
 
 end
 endmodule 

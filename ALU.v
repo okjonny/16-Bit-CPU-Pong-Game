@@ -129,7 +129,7 @@ always @(A, B, cin, Op)
 			
 		default:
 			begin
-				Output = 16'bxxxxxxxxxxxxxxxx;
+				Output = 16'b0;
 				Flags[0] = 1'bx;
 				Flags[1] = 1'bx;
 				Flags[2] = 1'bx;
