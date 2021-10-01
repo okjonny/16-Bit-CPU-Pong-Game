@@ -13,10 +13,6 @@ output [4:0] flag_reg;
 wire [15:0] ALU_output;
 output [6:0] Hex_output_1, Hex_output_2, Hex_output_3, Hex_output_4;
 
-//0 from register 
-// otherwise get from immediate 
-//module Fib_Fsm(clk, reset, alu_op, muxes, regs_en, imm);
-
 Fib_Fsm fsm(
                 .clk(clk),
                 .reset(reset),

@@ -3,7 +3,6 @@ module Encoder_16to4(Encoder_In, Encoder_Out);
 input [15:0] Encoder_In;
 output reg [4:0] Encoder_Out;
 
-
 always @ (Encoder_In)
 begin 
 	Encoder_Out = 0;

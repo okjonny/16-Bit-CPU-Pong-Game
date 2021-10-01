@@ -1,37 +1,6 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date:    15:24:24 09/13/2015 
-// Design Name: 
-// Module Name:    regbank 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
-//
-// Dependencies: 
-//
-// Revision: 
-// Revision 0.01 - File Created
-// Additional Comments: 
-//
-//////////////////////////////////////////////////////////////////////////////////
-//TODO
-//output reg [15:0] A;
-//output reg [15:0] B;
-//input reg controlA;
-//input reg controlB;
-// how can we decide the data path? 16 to 1 mux? or mutliple muxes to 1
-
-//TODO IMPLEMENT MUXES
-//MUX_2to1 reg1(.data_inA(),.out(A));
-//MUX_2to1 reg2(.data_inB,.out(B));
-
 // each instruction run occurs by one clock 
-module Register(D_in, wEnable, reset, clk, r
-    );
+module Register(D_in, wEnable, reset, clk, r);
 	 input [15:0] D_in;
 	 input clk, wEnable, reset;
 	 output reg [15:0] r;
@@ -54,7 +23,6 @@ module Register(D_in, wEnable, reset, clk, r
 	end
 endmodule
 
-
 // Shown below is one way to implement the register file
 // This is a bottom-up, structural instantiation
 // Another module is described in another file...
@@ -68,7 +36,6 @@ module RegBank(ALUBus, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r1
 	input [15:0] regEnable;
 	output [15:0] r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15;
 
-	
 Register Inst0(
 	.D_in(ALUBus),
 	.wEnable(regEnable[0]),
@@ -90,7 +57,4 @@ Register Inst12(ALUBus, regEnable[12], reset, clk, r12);
 Register Inst13(ALUBus, regEnable[13], reset, clk, r13);
 Register Inst14(ALUBus, regEnable[14], reset, clk, r14);
 Register Inst15(ALUBus, regEnable[15], reset, clk, r15);
-
-endmodule
-/**************/
-
+endmodule 

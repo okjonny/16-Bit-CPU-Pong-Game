@@ -9,7 +9,6 @@ wire [4:0] flag_reg;
 wire [15:0] ALU_output;
 integer i;
 
-//Fib_Fsm uut(.clk(clk), .reset(reset), .alu_op(ALU_Op), .muxes(mux_control), .regs_en(reg_enables),.imm(imm));
 FSM_ALU uut(.clk(clk), .reset(reset), .flag_reg(flag_reg), .ALU_output(ALU_output));
 
 initial begin
@@ -24,8 +23,6 @@ initial begin
 		begin
 			clk = 1; #1;
 			$display("alu_op: %b	muxes: %b, regs_en: %h	imm: %b output: %b", ALU_Op, mux_control, reg_enables, imm, ALU_output);
-//			$display("Output: %b	", ALU_output);
-
 			clk = 0; #1;	
 		end
 end
