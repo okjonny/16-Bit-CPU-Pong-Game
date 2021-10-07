@@ -29,17 +29,37 @@ bram storage(.data_a(data_a),
 				 .q_b(q_b));
 
 initial begin
+		// Write (A = 8, B = 10)
 		clk = 0; #20;
-		reset = 1; #20;
 		clk = 1; #20; // completes state zero
-		reset = 0; #20;
-		
-		$display("Data A: %b, Data B: %b, Reg A: %b, Reg B : %b, Output A: %b, Output B: %b", data_a, data_b, addr_a, addr_b, q_a, q_b);
-
 		clk = 0; #20;
-		reset = 1; #20;
+		$display("Data A: %d, Data B: %d, Reg A: %d, Reg B : %d, Output A: %d, Output B: %d", data_a, data_b, addr_a, addr_b, q_a, q_b);
+
+		// Read (A = 8, B = 10)
 		clk = 1; #20;
-		
+		clk = 0; #20;
+		$display("Data A: %d, Data B: %d, Reg A: %d, Reg B : %d, Output A: %d, Output B: %d", data_a, data_b, addr_a, addr_b, q_a, q_b);
+
+		// Modify (A += 1, B += 1, so A = 9, B = 11)
+		clk = 1; #20;
+		clk = 0; #20;
+		$display("Data A: %d, Data B: %d, Reg A: %d, Reg B : %d, Output A: %d, Output B: %d", data_a, data_b, addr_a, addr_b, q_a, q_b);
+
+		// Write (A=32, B=18)
+		clk = 1; #20;
+		clk = 0; #20;
+		$display("Data A: %d, Data B: %d, Reg A: %d, Reg B : %d, Output A: %d, Output B: %d", data_a, data_b, addr_a, addr_b, q_a, q_b);
+
+		// Read (A=32, B=18)
+		clk = 1; #20;
+		clk = 0; #20;
+		$display("Data A: %d, Data B: %d, Reg A: %d, Reg B : %d, Output A: %d, Output B: %d", data_a, data_b, addr_a, addr_b, q_a, q_b);
+
+		// Verify (Basically reading what we had stored in S2 to see it's unchanged, (A=9, B=11)
+		clk = 1; #20;
+		clk = 0; #20;
+		$display("Data A: %d, Data B: %d, Reg A: %d, Reg B : %d, Output A: %d, Output B: %d", data_a, data_b, addr_a, addr_b, q_a, q_b);
+
 //		for (i = 0; i < 16; i = i + 1)
 //		begin
 //			clk = 1; #1;

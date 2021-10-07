@@ -16,7 +16,7 @@ module bram
 	initial
 	begin
 		for(i=0;i<1024;i=i+1)
-			ram[i] = i[0]; 
+			ram[i] = 0; 
 	end
 
 	// Port A 
