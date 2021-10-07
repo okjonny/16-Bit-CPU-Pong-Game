@@ -7,7 +7,7 @@ module bram_FSM
 	output reg we_a, we_b
 );
 
-	reg [(DATA_WIDTH-1):0] q_a, q_b
+	//reg [(DATA_WIDTH-1):0] q_a, q_b;
 
 
 	reg [3:0] state; 
@@ -39,10 +39,10 @@ module bram_FSM
 	always @(state)
 	begin
 		case (state)
-			 S0: begin data_a = b'0000000000001000; data_b = b'0000000000001010; addr_a = 0; addr_b = 1; we_a = 1; we_b = 1	; end // Write (A = 8, B = 10)
+			 S0: begin data_a = 16'b0000000000001000; data_b = 16'b0000000000001010; addr_a = 0; addr_b = 1; we_a = 1; we_b = 1; end // Write (A = 8, B = 10)
 			 S1: begin data_a = 0; data_b = 0; addr_a = 0; addr_b = 1; we_a = 0; we_b = 0	; end // Read (A = 8, B = 10)
-			 S2: begin data_a = b'0000000000001001; data_b = b'0000000000001011; addr_a = 0; addr_b = 1; we_a = 1; we_b = 1	; end // Modify (A += 1, B += 1, so A= 9, B = 11)
-			 S3: begin data_a = b'0000000000100000; data_b = b'0000000000010010; addr_a = 510; addr_b = 511; we_a = 1; we_b = 1	; end // Write (A=32, B=18)
+			 S2: begin data_a = 16'b0000000000001001; data_b = 16'b0000000000001011; addr_a = 0; addr_b = 1; we_a = 1; we_b = 1; end // Modify (A += 1, B += 1, so A= 9, B = 11)
+			 S3: begin data_a = 16'b0000000000100000; data_b = 16'b0000000000010010; addr_a = 510; addr_b = 511; we_a = 1; we_b = 1	; end // Write (A=32, B=18)
 			 S4: begin data_a = 0; data_b = 0; addr_a = 0; addr_b = 0; we_a = 0; we_b = 0	; end // Read (A=32, B=18)
 			 S5: begin data_a = 0; data_b = 0; addr_a = 0; addr_b = 1; we_a = 0; we_b = 0	; end // Verify (Basically reading what we had stored in S2 to see it's unchanged, (A=9, B=11)
 		endcase	
