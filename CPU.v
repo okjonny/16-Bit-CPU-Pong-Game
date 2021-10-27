@@ -5,7 +5,7 @@ wire[4:0] Reg_Enable;
 wire [4:0] Flags;
 input clk,reset;
 wire [15:0] Immediate;
-wire Tri_Enable, Flags_Enable, cin;
+wire ALU_Bus_enable, Flags_Enable, cin;
 wire [7:0] OP, muxes;
 wire[15:0] r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
 wire [15:0] A_mux, B_mux, ALU_Bus, Imm_out;
@@ -38,11 +38,18 @@ ALU main(.A(A_mux),.B(Imm_out),.Op(OP),.Flags(Flags),.cin(cin), .Output(ALU_Out_
 Five_Bit_Register Flag_reg(.D_in(Flags), .wEnable(Flags_Enable), .reset(Reset), .clk(clk), .r(Flag_Reg_Output));
 
 // Allows the bus to write to the registers.
-tri_buf ALU_buf(.enable(Tri_Enable), .D(ALU_Out_Bus),.Q(ALU_Bus));
+//tri_buf ALU_buf(.enable(Tri_Enable_ALU), .D(ALU_Out_Bus),.Q(ALU_Bus));
 
 // Allows the Bram to write to the registers.
 
-//tri_buf B_Ram(.enable(), .D(ALU_Out_Bus), .Q(ALU_Bus));
+//We are reading from BRAM's A output, B is reserved for peripherals
+//tri_buf B_Ram(.enable(Tri_Enable_BRAM), .D(q_a), .Q(ALU_Bus));
+
+
+//If control == 1, ALU Bus is enabled, else BRAM
+MUX_2to1 ALU_Bus_MUX(.data_inA(q_a), .data_inB(ALU_Out_Bus), .control(ALU_Bus_enable), .out(ALU_Bus));
+
+
 
 //B Ram
 bram storage(.data_a(data_a), .data_b(data_b), .addr_a(addr_a), .addr_b(addr_b), .we_a(we_a), .we_b(we_b), .clk(clk), .q_a(q_a), .q_b(q_b));
