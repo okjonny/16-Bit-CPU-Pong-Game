@@ -14,9 +14,6 @@ wire [15:0] Reg_Enable_16;
 output [4:0] Flag_Reg_Output;
 output wire [15:0] ALU_Out_Bus;
 
-//Decoder
-decoder Dec(.instruction_in(instr_out), .instruction_out(OP), .R_dest(B_Mux_input), .R_src(A_Mux_input), .immediate(Immediate), .c_in(cin), .RI_out(r_i_switch));
-
 //FSM
 CPU_FSM FSM(.clk(clk), .reset(reset), .PC_enable(PC_enable), .IR_enable(IR_enable), .R_enable(R_enable));
 
@@ -25,6 +22,9 @@ program_counter PC(.clk(clk), .reset(reset), .pc_enable(PC_enable), .pc_out(addr
 
 //Instruction Register
 instruction_reg Instruction_Register(.d_enable(IR_enable), .clk(clk), .instr_in(q_a), .instr_out(instr_out));
+
+//Decoder
+decoder Dec(.instruction_in(instr_out), .instruction_out(OP), .R_dest(B_Mux_input), .R_src(A_Mux_input), .immediate(Immediate), .c_in(cin), .RI_out(r_i_switch));
 
 // Reads in a 4 bit reg_enable and turns it to 16 bit reg_enable.
 Decoder_4to16 Decode_Reg_Enable(.Decode_In(B_Mux_input), .Decode_Out(Reg_Enable_16));	 
