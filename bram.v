@@ -17,8 +17,10 @@ module bram
 	begin
 		for(i=0;i<1024;i=i+1)
 			ram[i] = 0; 
+		$readmemb("Test.txt",ram);
 	end
 
+	
 	// Port A 
 	always @ (posedge clk)
 	begin

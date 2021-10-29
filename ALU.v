@@ -15,6 +15,7 @@ output reg [15:0] Output;
 
 // Parameter Defintions:
 parameter ADD = 	8'b00000101;
+parameter SUB =   8'b00001001;
 parameter OR = 	8'b00000010;
 parameter CMP = 	8'b00001011;
 parameter AND = 	8'b00000001;
@@ -32,17 +33,26 @@ always @(A, B, cin, Op)
 			{Flags[0], Output} = A + B + cin; //+ Flags[0]; // Flags[0] - Carry-bit, Can't add Flag[0] ASK SAM
 			Flags[1] = 1'bx;
 			Flags[2] = 1'bx;
-			Flags[3] = 1'bx;
-			Flags[4] = 1'bx;
+			Flags[3] = Output == 0;
+			Flags[4] = Output[15];
 		end
-		
+		SUB:
+		begin
+			//Rdest = Rdest - Rsrc
+			Output = B - A; //+ Flags[0]; // Flags[0] - Carry-bit, Can't add Flag[0] ASK SAM
+			Flags[0] = 1'bx;
+			Flags[1] = 1'bx;
+			Flags[2] = 1'bx;
+			Flags[3] = Output == 0;
+			Flags[4] = Output[15];
+		end
 		OR: 
 		begin
 			Output = A | B;
 			Flags[0] = 1'bx;
 			Flags[1] = 1'bx;
 			Flags[2] = 1'bx;
-			Flags[3] = 1'bx;
+			Flags[3] = Output == 0;
 			Flags[4] = 1'bx;
 		end
 		
@@ -52,7 +62,7 @@ always @(A, B, cin, Op)
 				Flags[0] = 1'bx;
 				Flags[1] = 1'bx;
 				Flags[2] = 1'bx;
-				Flags[3] = 1'bx;
+				Flags[3] = Output == 0;
 				Flags[4] = 1'bx;
 			end
 			
@@ -62,7 +72,7 @@ always @(A, B, cin, Op)
 				Flags[0] = 1'bx;
 				Flags[1] = 1'bx;
 				Flags[2] = 1'bx;
-				Flags[3] = 1'bx;
+				Flags[3] = Output == 0;
 				Flags[4] = 1'bx;
 			end
 		CMP:
@@ -109,7 +119,7 @@ always @(A, B, cin, Op)
 				Flags[0] = 1'bx;
 				Flags[1] = 1'bx;
 				Flags[2] = 1'bx;
-				Flags[3] = 1'bx;
+				Flags[3] = Output == 0;
 				Flags[4] = 1'bx;
 			end
 				
@@ -123,7 +133,7 @@ always @(A, B, cin, Op)
 				Flags[0] = 1'bx;
 				Flags[1] = 1'bx;
 				Flags[2] = 1'bx;
-				Flags[3] = 1'bx;
+				Flags[3] = Output == 0;
 				Flags[4] = 1'bx;
 			end
 			

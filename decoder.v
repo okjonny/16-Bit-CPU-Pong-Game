@@ -1,19 +1,20 @@
-module decoder(instruction_in, instruction_out, R_dest, R_src, immediate, c_in);
+module decoder(instruction_in, instruction_out, R_dest, R_src, immediate, c_in, RI_out);
 
 input [15:0] instruction_in;
 
 output reg [15:0] immediate;
 output reg [7:0] instruction_out;
-output reg [3:0] R_dest, R_src;
-output reg c_in;
+//output reg [3:0] R_dest, R_src;
 
-reg [7:0] op, ipad;
+//10/28/2021 REMOVE CIN, NO NEED NO MORE
 
 //Exract registers from instruction
-R_src = instruction_in[3:0];
-R_dest = instruction_in[11:8];
-op = {instruction_in[15:12], instruction_in[7:4]};
+output [3:0] R_src = instruction_in[3:0];
+output [3:0] R_dest = instruction_in[11:8];
+wire [7:0] op = {instruction_in[15:12], instruction_in[7:4]};
 
+reg [7:0] ipad;
+output reg c_in, RI_out; //0 is register, 1 is immediate for RI_out
 
 // Parameter Defintions:
 parameter ADD = 	8'b00000101;
@@ -44,28 +45,25 @@ parameter LUI = 	8'b1111xxxx;
 //parameter STOR =  8'b01000100;
 
 
-always @(R_src, R_dest, op)
+always @(R_src, R_dest, instruction_in, op)
 	begin
-		case(op)
-			ADD, OR, CMP, AND, XOR, MOV, LSH, ASHU:
+		casex(op)
+			ADD, SUB, OR, CMP, AND, XOR, MOV, LSH, ASHU:
 				begin		
 					instruction_out = op;
-					C_in = 0;
+					c_in = 0;
+					ipad = 8'b00000000; 
+					immediate = 16'b0000000000000000;
+					RI_out = 0;
 				end
-			
-			SUB:
-				begin
-				//Rdest = Rdest - Rsrc
-					instruction_out = ADD;
-					R_src = ~R_src;
-					c_in = 1;
-				end
-			
+				
 			MUL:
 				begin
 					instruction_out = LSH;
 					c_in = 0;
-
+					ipad = 8'b00000000;
+					immediate = 16'b0000000000000000;
+					RI_out = 0;
 				end
 				
 			ADDI:
@@ -76,8 +74,9 @@ always @(R_src, R_dest, op)
 					else
 						ipad = 8'b00000000;
 					
-					immediate = {ipad, instruction_in[7:4], R_src}
+					immediate = {ipad, instruction_in[7:4], R_src};
 					c_in = 0;
+					RI_out = 1;
 				end
 			
 			MULI:
@@ -88,8 +87,9 @@ always @(R_src, R_dest, op)
 					else
 						ipad = 8'b00000000;
 					
-					immediate = {ipad, instruction_in[7:4], R_src}
+					immediate = {ipad, instruction_in[7:4], R_src};
 					c_in = 0;
+					RI_out = 1;
 				end
 				
 			SUBI:
@@ -100,8 +100,9 @@ always @(R_src, R_dest, op)
 					else
 						ipad = 8'b00000000;
 						
-					immediate = {ipad, ~instruction_in[7:4], ~R_src}
+					immediate = {ipad, ~instruction_in[7:4], ~R_src};
 					c_in = 1;
+					RI_out = 1;
 				end
 			
 			CMPI:
@@ -112,40 +113,45 @@ always @(R_src, R_dest, op)
 					else
 						ipad = 8'b00000000;
 					
-					immediate = {ipad, instruction_in[7:4], R_src}
+					immediate = {ipad, instruction_in[7:4], R_src};
 					c_in = 0;
+					RI_out = 1;
 				end
 				
 			ANDI:
 				begin
 					instruction_out = AND;
 					ipad = 8'b00000000;
-					immediate = {ipad, instruction_in[7:4], R_src}
+					immediate = {ipad, instruction_in[7:4], R_src};
 					c_in = 0;
+					RI_out = 1;
 				end
 			
 			ORI:
 				begin
 					instruction_out = OR;
 					ipad = 8'b00000000;
-					immediate = {ipad, instruction_in[7:4], R_src}
+					immediate = {ipad, instruction_in[7:4], R_src};
 					c_in = 0;
+					RI_out = 1;
 				end
 			
 			XORI:
 				begin
 					instruction_out = XOR;
 					ipad = 8'b00000000;
-					immediate = {ipad, instruction_in[7:4], R_src}
+					immediate = {ipad, instruction_in[7:4], R_src};
 					c_in = 0;
+					RI_out = 1;
 				end
 				
 			MOVI:
 				begin
 					instruction_out = MOV;
 					ipad = 8'b00000000;
-					immediate = {ipad, instruction_in[7:4], R_src}
+					immediate = {ipad, instruction_in[7:4], R_src};
 					c_in = 0;
+					RI_out = 1;
 				end
 			
 //			LSHI:
@@ -167,6 +173,10 @@ always @(R_src, R_dest, op)
 			default:
 				begin
 					instruction_out = 8'b00000000;
+					ipad = 8'b00000000;
+					immediate = 16'b0000000000000000;
+					c_in = 0;
+					RI_out = 1;
 				end
 		endcase
 	end
