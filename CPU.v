@@ -44,7 +44,7 @@ MUX_2to1 Imm_mux(.data_inA(B_mux), .data_inB(Immediate), .control(r_i_switch),.o
 ALU main(.A(A_mux),.B(Imm_out),.Op(OP),.Flags(Flags),.cin(cin), .Output(ALU_Out_Bus));
 
 // Stores the flags.
-Five_Bit_Register Flag_reg(.D_in(Flags), .wEnable(Flags_Enable), .reset(Reset), .clk(clk), .r(Flag_Reg_Output));
+Five_Bit_Register Flag_reg(.D_in(Flags), .wEnable(Flags_Enable), .reset(reset), .clk(clk), .r(Flag_Reg_Output));
 
 // Allows the bus to write to the registers.
 //tri_buf ALU_buf(.enable(Tri_Enable_ALU), .D(ALU_Out_Bus),.Q(ALU_Bus));

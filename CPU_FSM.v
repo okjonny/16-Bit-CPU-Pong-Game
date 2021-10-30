@@ -14,6 +14,7 @@ module CPU_FSM
 	end
 	
 	always @(posedge clk, negedge reset)begin
+	//changed 
 		if (!reset)
 			nextState <= S0;
 		else begin

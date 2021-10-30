@@ -16,9 +16,9 @@ always #20 clk = ~clk;
 initial begin
 
 
-		reset = 0; #20;
 		reset = 1; #20;
 		reset = 0; #20;
+		reset = 1; #20;
 		
 		clk = 0; #20;
 end

@@ -9,10 +9,10 @@ output reg [7:0] instruction_out;
 //10/28/2021 REMOVE CIN, NO NEED NO MORE
 
 //Exract registers from instruction
-output reg [3:0] R_src;
-initial R_src = instruction_in[3:0];
-output reg [3:0] R_dest;
-initial R_dest = instruction_in[11:8];
+output [3:0] R_src;
+assign R_src = instruction_in[3:0];
+output [3:0] R_dest;
+assign R_dest = instruction_in[11:8];
 
 wire [7:0] op = {instruction_in[15:12], instruction_in[7:4]};
 
