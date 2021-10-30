@@ -1,6 +1,6 @@
 module program_counter(clk, reset, pc_enable, pc_out);
     input pc_enable;
-    input    clk, reset;
+    input clk, reset;
     output reg [15:0] pc_out;
 
     initial begin

@@ -1,11 +1,10 @@
-module CPU(clk, reset, Flag_Reg_Output, ALU_Out_Bus);
-
+module CPU(clk, reset, Flag_Reg_Output, ALU_Out_Bus); 
 wire [4:0] A_Mux_input, B_Mux_input;
 wire[4:0] Reg_Enable;
 wire [4:0] Flags;
 input clk,reset;
-wire [15:0] Immediate, instr_out;
-wire ALU_Bus_enable, Flags_Enable, cin, PC_enable, IR_enable, r_i_switch, R_enable;
+wire [15:0] Immediate, instr_out, data_a, data_b, addr_a, addr_b, q_a, q_b;
+wire ALU_Bus_enable, Flags_Enable, cin, PC_enable, IR_enable, r_i_switch, R_enable, we_a, we_b;
 wire [7:0] OP, muxes;
 wire[15:0] r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
 wire [15:0] A_mux, B_mux, ALU_Bus, Imm_out;
@@ -30,7 +29,7 @@ decoder Dec(.instruction_in(instr_out), .instruction_out(OP), .R_dest(B_Mux_inpu
 Decoder_4to16 Decode_Reg_Enable(.Decode_In(B_Mux_input), .Decode_Out(Reg_Enable_16));	 
 
 // Stores all the registers and connects them to the ALU_Bus. 	 
-RegBank Bank(.ALUBus(ALU_Bus),.r0(r0),.r1(r1),.r2(r2),.r3(r3),.r4(r4),.r5(r5),.r6(r6),.r7(r7),.r8(r8),.r9(r9),.r10(r10),.r11(r11),.r12(r12),.r13(r13),.r14(r14),.r15(r15),.regEnable(Reg_Enable_16),.clk(clk),.reset(Reset));
+RegBank Bank(.ALUBus(ALU_Bus),.r0(r0),.r1(r1),.r2(r2),.r3(r3),.r4(r4),.r5(r5),.r6(r6),.r7(r7),.r8(r8),.r9(r9),.r10(r10),.r11(r11),.r12(r12),.r13(r13),.r14(r14),.r15(r15),.regEnable(Reg_Enable_16),.clk(clk),.reset(reset));
 
 // This mux takes in from the register bank.
 MUX_16to1 A(.reg_select(A_Mux_input),.out(A_mux), .r0(r0),.r1(r1),.r2(r2),.r3(r3),.r4(r4),.r5(r5),.r6(r6),.r7(r7),.r8(r8),.r9(r9),.r10(r10),.r11(r11),.r12(r12),.r13(r13),.r14(r14),.r15(r15));
