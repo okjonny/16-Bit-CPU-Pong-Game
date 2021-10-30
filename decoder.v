@@ -9,8 +9,11 @@ output reg [7:0] instruction_out;
 //10/28/2021 REMOVE CIN, NO NEED NO MORE
 
 //Exract registers from instruction
-output [3:0] R_src = instruction_in[3:0];
-output [3:0] R_dest = instruction_in[11:8];
+output reg [3:0] R_src;
+initial R_src = instruction_in[3:0];
+output reg [3:0] R_dest;
+initial R_dest = instruction_in[11:8];
+
 wire [7:0] op = {instruction_in[15:12], instruction_in[7:4]};
 
 reg [7:0] ipad;
@@ -45,7 +48,7 @@ parameter LUI = 	8'b1111xxxx;
 //parameter STOR =  8'b01000100;
 
 
-always @(R_src, R_dest, instruction_in, op)
+always @(instruction_in, op)
 	begin
 		casex(op)
 			ADD, SUB, OR, CMP, AND, XOR, MOV, LSH, ASHU:

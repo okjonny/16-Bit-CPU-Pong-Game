@@ -12,7 +12,12 @@ module tb_program_counter();
         .pc_out(pc_out)
     );
 
+	 
+
     always #5 clk = ~clk; 
+	 
+	 
+	
     initial begin
         reset = 0;
         pc_enable = 0;

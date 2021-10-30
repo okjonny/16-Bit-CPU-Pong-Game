@@ -37,12 +37,12 @@
 # -------------------------------------------------------------------------- #
 
 
-set_global_assignment -name DEVICE 5CSEMA5F31C6
-set_global_assignment -name FAMILY "Cyclone V"
+set_global_assignment -name DEVICE 10M08DAF484C8G
+set_global_assignment -name FAMILY "MAX 10"
 set_global_assignment -name TOP_LEVEL_ENTITY CPU
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 20.1.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "16:04:14  SEPTEMBER 02, 2021"
-set_global_assignment -name LAST_QUARTUS_VERSION "18.0.0 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "20.1.1 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
@@ -59,22 +59,6 @@ set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
 set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH tb_CPU -section_id eda_simulation
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST ON -section_id eda_simulation
-set_location_assignment PIN_AA15 -to reset
-set_location_assignment PIN_AA14 -to clk
-set_location_assignment PIN_AH28 -to Hex_output_1[6]
-set_location_assignment PIN_AG28 -to Hex_output_1[5]
-set_location_assignment PIN_AF28 -to Hex_output_1[4]
-set_location_assignment PIN_AG27 -to Hex_output_1[3]
-set_location_assignment PIN_AE28 -to Hex_output_1[2]
-set_location_assignment PIN_AE27 -to Hex_output_1[1]
-set_location_assignment PIN_AE26 -to Hex_output_1[0]
-set_location_assignment PIN_AD27 -to Hex_output_2[6]
-set_location_assignment PIN_AF30 -to Hex_output_2[5]
-set_location_assignment PIN_AF29 -to Hex_output_2[4]
-set_location_assignment PIN_AG30 -to Hex_output_2[3]
-set_location_assignment PIN_AH30 -to Hex_output_2[2]
-set_location_assignment PIN_AH29 -to Hex_output_2[1]
-set_location_assignment PIN_AJ29 -to Hex_output_2[0]
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
