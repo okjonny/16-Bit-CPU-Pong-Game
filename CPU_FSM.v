@@ -1,7 +1,7 @@
 module CPU_FSM
 (
 	input clk, reset,
-	output reg PC_enable, IR_enable, R_enable
+	output reg PC_enable, IR_enable, R_enable, ALU_Bus_enable
 );
 
 	reg [3:0] state; 
@@ -30,9 +30,9 @@ module CPU_FSM
 	always @(state)
 	begin
 		case (state)
-			 S0: begin PC_enable = 0; R_enable = 0; IR_enable = 1; end //Fetch
-			 S1: begin PC_enable = 0; R_enable = 0; IR_enable = 0; end //Decode
-			 S2: begin PC_enable = 1; R_enable = 1; IR_enable = 0; end //Execute/Write-Back
-		endcase	
+			 S0: begin PC_enable = 0; R_enable = 0; IR_enable = 1; ALU_Bus_enable = 1; end //Fetch   alu will write back to reg and not bram
+			 S1: begin PC_enable = 0; R_enable = 0; IR_enable = 0; ALU_Bus_enable = 1; end //Decode  alu will write back to reg and not bram
+			 S2: begin PC_enable = 1; R_enable = 1; IR_enable = 0; ALU_Bus_enable = 1; end //Execute/Write-Back alu will write back to reg and not bram
+		endcase
 	end
 endmodule
