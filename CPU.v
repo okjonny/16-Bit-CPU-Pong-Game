@@ -1,6 +1,6 @@
 module CPU(clk, reset, Flag_Reg_Output, ALU_Out_Bus); 
-wire [4:0] A_Mux_input, B_Mux_input;
-wire[4:0] Reg_Enable;
+wire [3:0] A_Mux_input, B_Mux_input;
+wire[3:0] Reg_Enable;
 wire [4:0] Flags;
 input clk,reset;
 wire [15:0] Immediate, instr_out, data_a, data_b, addr_a, addr_b, q_a, q_b;
