@@ -1,4 +1,4 @@
-module decoder(instruction_in, instruction_out, R_dest, R_src, immediate, c_in, RI_out);
+module decoder(instruction_in, instruction_out, R_dest, R_src, immediate, c_in, RI_out, d_type);
 
 input [15:0] instruction_in;
 
@@ -7,6 +7,7 @@ output reg [7:0] instruction_out;
 //output reg [3:0] R_dest, R_src;
 
 //10/28/2021 REMOVE CIN, NO NEED NO MORE
+
 
 //Exract registers from instruction
 output [3:0] R_src;
@@ -18,6 +19,8 @@ wire [7:0] op = {instruction_in[15:12], instruction_in[7:4]};
 
 reg [7:0] ipad;
 output reg c_in, RI_out; //0 is register, 1 is immediate for RI_out
+output d_type;
+assign d_type = (instruction_in[15:12] == 4'b0100);
 
 // Parameter Defintions:
 parameter ADD = 	8'b00000101;
@@ -49,7 +52,7 @@ parameter LUI = 	8'b1111xxxx;
 
 
 always @(instruction_in, op)
-	begin
+	begin 
 		casex(op)
 			ADD, SUB, OR, CMP, AND, XOR, MOV, LSH, ASHU:
 				begin		
