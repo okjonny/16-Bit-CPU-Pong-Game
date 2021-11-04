@@ -18,7 +18,7 @@ output wire [15:0] ALU_Out_Bus;
 CPU_FSM FSM(.clk(clk), .reset(reset), .PC_enable(PC_enable), .IR_enable(IR_enable), .R_enable(R_enable) , .ALU_Bus_enable(ALU_Bus_control), .instr_type(instr_type), .reg_read(reg_read));
 
 //MUX that switches between PC (R-type) and Reg (D-type)
-MUX_2to1 PC_Reg_MUX(.data_inA(addr_a), .data_inB(B_mux), .control(reg_read),.out(addr_a)); 
+MUX_2to1 PC_Reg_MUX(.data_inA(pc_out), .data_inB(B_mux), .control(reg_read),.out(addr_a)); 
 
 //Program counter
 program_counter PC(.clk(clk), .reset(reset), .pc_enable(PC_enable), .pc_out(pc_out));
