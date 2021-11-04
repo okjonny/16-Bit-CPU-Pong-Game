@@ -1,4 +1,4 @@
-module decoder(instruction_in, instruction_out, R_dest, R_src, immediate, c_in, RI_out, d_type);
+module decoder(instruction_in, instruction_out, R_dest, R_src, immediate, RI_out, instr_type);
 
 input [15:0] instruction_in;
 
@@ -18,9 +18,10 @@ assign R_dest = instruction_in[11:8];
 wire [7:0] op = {instruction_in[15:12], instruction_in[7:4]};
 
 reg [7:0] ipad;
-output reg c_in, RI_out; //0 is register, 1 is immediate for RI_out
-output d_type;
-assign d_type = (instruction_in[15:12] == 4'b0100);
+output reg RI_out; //0 is register, 1 is immediate for RI_out
+
+//00 is R-Type, 01 is STORE, 10 is LOAD
+output reg [1:0] instr_type;
 
 // Parameter Defintions:
 parameter ADD = 	8'b00000101;
@@ -43,7 +44,8 @@ parameter XORI = 	8'b0011xxxx;
 parameter MOVI = 	8'b1101xxxx;
 parameter LSHI = 	8'b1000xxxx;
 parameter LUI = 	8'b1111xxxx;
-
+parameter LOAD =  8'b01000000;
+parameter STORE = 8'b01000100;
 
 
 //Implement LOAD and STOR later!
@@ -57,19 +59,20 @@ always @(instruction_in, op)
 			ADD, SUB, OR, CMP, AND, XOR, MOV, LSH, ASHU:
 				begin		
 					instruction_out = op;
-					c_in = 0;
 					ipad = 8'b00000000; 
 					immediate = 16'b0000000000000000;
 					RI_out = 0;
+					instr_type = 2'b00;
 				end
 				
 			MUL:
 				begin
 					instruction_out = LSH;
-					c_in = 0;
 					ipad = 8'b00000000;
 					immediate = 16'b0000000000000000;
 					RI_out = 0;
+					instr_type = 2'b00;
+
 				end
 				
 			ADDI:
@@ -81,8 +84,8 @@ always @(instruction_in, op)
 						ipad = 8'b00000000;
 					
 					immediate = {ipad, instruction_in[7:4], R_src};
-					c_in = 0;
 					RI_out = 1;
+					instr_type = 2'b00;
 				end
 			
 			MULI:
@@ -94,21 +97,21 @@ always @(instruction_in, op)
 						ipad = 8'b00000000;
 					
 					immediate = {ipad, instruction_in[7:4], R_src};
-					c_in = 0;
 					RI_out = 1;
+					instr_type = 2'b00;
 				end
 				
 			SUBI:
 				begin
-					instruction_out = ADD;
+					instruction_out = SUB;
 					if(instruction_in[7] == 1)
 						ipad = 8'b11111111;
 					else
 						ipad = 8'b00000000;
 						
 					immediate = {ipad, ~instruction_in[7:4], ~R_src};
-					c_in = 1;
 					RI_out = 1;
+					instr_type = 2'b00;
 				end
 			
 			CMPI:
@@ -120,8 +123,8 @@ always @(instruction_in, op)
 						ipad = 8'b00000000;
 					
 					immediate = {ipad, instruction_in[7:4], R_src};
-					c_in = 0;
 					RI_out = 1;
+					instr_type = 2'b00;
 				end
 				
 			ANDI:
@@ -129,8 +132,8 @@ always @(instruction_in, op)
 					instruction_out = AND;
 					ipad = 8'b00000000;
 					immediate = {ipad, instruction_in[7:4], R_src};
-					c_in = 0;
 					RI_out = 1;
+					instr_type = 2'b00;
 				end
 			
 			ORI:
@@ -138,8 +141,8 @@ always @(instruction_in, op)
 					instruction_out = OR;
 					ipad = 8'b00000000;
 					immediate = {ipad, instruction_in[7:4], R_src};
-					c_in = 0;
 					RI_out = 1;
+					instr_type = 2'b00;
 				end
 			
 			XORI:
@@ -147,8 +150,8 @@ always @(instruction_in, op)
 					instruction_out = XOR;
 					ipad = 8'b00000000;
 					immediate = {ipad, instruction_in[7:4], R_src};
-					c_in = 0;
 					RI_out = 1;
+					instr_type = 2'b00;
 				end
 				
 			MOVI:
@@ -156,33 +159,35 @@ always @(instruction_in, op)
 					instruction_out = MOV;
 					ipad = 8'b00000000;
 					immediate = {ipad, instruction_in[7:4], R_src};
-					c_in = 0;
 					RI_out = 1;
+					instr_type = 2'b00;
 				end
-			
-//			LSHI:
-//				begin
-//					instruction_out = LSH;
-//					ipad = 8'b00000000;
-//					immediate = {ipad, instruction_in[7:4], R_src}
-//					c_in = 0;
-//				end
-
-//			LUI:
-//				begin
-//					instruction_out = ?; Left shift by 8 then load...
-//					ipad = 8'b00000000;
-//					immediate = {ipad, instruction_in[7:4], R_src}
-//					c_in = 0;
-//				end
+				
+			STORE:
+				begin
+					instruction_out = 8'b00000000;
+					ipad = 8'b00000000;
+					immediate = 16'b0000000000000000;
+					RI_out = 0;
+					instr_type = 2'b01;
+				end
+				
+			LOAD:
+				begin
+					instruction_out = 8'b00000000;
+					ipad = 8'b00000000;
+					immediate = 16'b0000000000000000;
+					RI_out = 0;
+					instr_type = 2'b10;
+				end
 			
 			default:
 				begin
 					instruction_out = 8'b00000000;
 					ipad = 8'b00000000;
 					immediate = 16'b0000000000000000;
-					c_in = 0;
 					RI_out = 1;
+					instr_type = 2'b11;
 				end
 		endcase
 	end

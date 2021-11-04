@@ -1,10 +1,11 @@
 module CPU(clk, reset, Flag_Reg_Output, ALU_Out_Bus); 
+wire [1:0] instr_type;
 wire [3:0] A_Mux_input, B_Mux_input;
 wire[3:0] Reg_Enable;
 wire [4:0] Flags;
 input clk,reset;
 wire [15:0] Immediate, instr_out, data_a, data_b, addr_a, addr_b, q_a, q_b, pc_out;
-wire ALU_Bus_enable, Flags_Enable, cin, PC_enable, IR_enable, r_i_switch, R_enable, we_a, we_b, ALU_Bus_control, d_enable, reg_read;
+wire ALU_Bus_enable, Flags_Enable, cin, PC_enable, IR_enable, r_i_switch, R_enable, we_a, we_b, ALU_Bus_control, reg_read;
 wire [7:0] OP, muxes;
 wire[15:0] r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
 wire [15:0] A_mux, B_mux, ALU_Bus, Imm_out;
@@ -14,19 +15,19 @@ output [4:0] Flag_Reg_Output;
 output wire [15:0] ALU_Out_Bus;
 
 //FSM
-CPU_FSM FSM(.clk(clk), .reset(reset), .PC_enable(PC_enable), .IR_enable(IR_enable), .R_enable(R_enable) , .ALU_Bus_enable(ALU_Bus_control), .is_d_type(d_enable), .reg_read(reg_read));
+CPU_FSM FSM(.clk(clk), .reset(reset), .PC_enable(PC_enable), .IR_enable(IR_enable), .R_enable(R_enable) , .ALU_Bus_enable(ALU_Bus_control), .instr_type(instr_type), .reg_read(reg_read));
 
 //MUX that switches between PC (R-type) and Reg (D-type)
 MUX_2to1 PC_Reg_MUX(.data_inA(addr_a), .data_inB(B_mux), .control(reg_read),.out(addr_a)); 
 
 //Program counter
-program_counter PC(.clk(clk), .reset(reset), .pc_enable(PC_enabl e), .pc_out(pc_out));
+program_counter PC(.clk(clk), .reset(reset), .pc_enable(PC_enable), .pc_out(pc_out));
 
 //Instruction Register
 instruction_reg Instruction_Register(.d_enable(IR_enable), .clk(clk), .instr_in(q_a), .instr_out(instr_out));
 
 //Decoder
-decoder Dec(.instruction_in(instr_out), .instruction_out(OP), .R_dest(B_Mux_input), .R_src(A_Mux_input), .immediate(Immediate), .c_in(cin), .RI_out(r_i_switch), .d_type(d_enable));
+decoder Dec(.instruction_in(instr_out), .instruction_out(OP), .R_dest(B_Mux_input), .R_src(A_Mux_input), .immediate(Immediate), .RI_out(r_i_switch), .instr_type(instr_type));
 
 // Reads in a 4 bit reg_enable and turns it to 16 bit reg_enable.
 Decoder_4to16 Decode_Reg_Enable(.Decode_In(B_Mux_input), .Decode_Out(Reg_Enable_16), .write_enable(R_enable));	 
@@ -44,7 +45,7 @@ MUX_16to1 B(.reg_select(B_Mux_input),.out(B_mux), .r0(r0),.r1(r1),.r2(r2),.r3(r3
 MUX_2to1 Imm_mux(.data_inA(B_mux), .data_inB(Immediate), .control(r_i_switch),.out(Imm_out)); 
 
 // ALU does opcode instructions.
-ALU main(.A(A_mux),.B(Imm_out),.Op(OP),.Flags(Flags),.cin(cin), .Output(ALU_Out_Bus));
+ALU main(.A(A_mux),.B(Imm_out),.Op(OP),.Flags(Flags), .Output(ALU_Out_Bus));
 
 // Stores the flags.
 Five_Bit_Register Flag_reg(.D_in(Flags), .wEnable(Flags_Enable), .reset(reset), .clk(clk), .r(Flag_Reg_Output));

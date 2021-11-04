@@ -1,8 +1,7 @@
-module ALU(A, B, Op, Flags, cin, Output);
+module ALU(A, B, Op, Flags, Output);
 
 input [15:0] A,B; // ALU 16-Bit Inputs
 input [7:0] Op;	// Op-code selection
-input cin;
 
 // Flags[0] - Carry-bit
 // Flags[1] - Low flag: 1 if Rdest operand < Rsrc as UNSIGNED numbers
@@ -24,13 +23,13 @@ parameter MOV = 	8'b00001101;
 parameter LSH = 	8'b10000100;
 parameter ASHU = 	8'b10000110;
 
-always @(A, B, cin, Op)
+always @(A, B, Op)
 	begin
 		case(Op)
 		//  Add and Subtract Case
 		ADD: 
 		begin		
-			{Flags[0], Output} = A + B + cin; //+ Flags[0]; // Flags[0] - Carry-bit, Can't add Flag[0] ASK SAM
+			{Flags[0], Output} = A + B; //+ Flags[0]; // Flags[0] - Carry-bit, Can't add Flag[0] ASK SAM
 			Flags[1] = 1'bx;
 			Flags[2] = 1'bx;
 			Flags[3] = Output == 0;
