@@ -5,7 +5,7 @@ wire[3:0] Reg_Enable;
 wire [4:0] Flags;
 input clk,reset;
 wire [15:0] Immediate, instr_out, data_a, data_b, addr_a, addr_b, q_a, q_b, pc_out;
-wire ALU_Bus_enable, Flags_Enable, cin, PC_enable, IR_enable, r_i_switch, R_enable, we_a, we_b, ALU_Bus_control, reg_read;
+wire ALU_Bus_enable, Flags_Enable, cin, PC_enable, IR_enable, r_i_switch, R_enable, we_a, we_b, ALU_Bus_control, reg_read, WrtBrm_en;
 wire [7:0] OP, muxes;
 wire[15:0] r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
 wire [15:0] A_mux, B_mux, ALU_Bus, Imm_out;
@@ -15,7 +15,7 @@ output [4:0] Flag_Reg_Output;
 output wire [15:0] ALU_Out_Bus;
 
 //FSM
-CPU_FSM FSM(.clk(clk), .reset(reset), .PC_enable(PC_enable), .IR_enable(IR_enable), .R_enable(R_enable) , .ALU_Bus_enable(ALU_Bus_control), .instr_type(instr_type), .reg_read(reg_read));
+CPU_FSM FSM(.clk(clk), .reset(reset), .PC_enable(PC_enable), .IR_enable(IR_enable), .R_enable(R_enable) , .ALU_Bus_enable(ALU_Bus_control), .instr_type(instr_type), .reg_read(reg_read), .WrtBrm_en(WrtBrm_en));
 
 //MUX that switches between PC (R-type) and Reg (D-type)
 MUX_2to1 PC_Reg_MUX(.data_inA(pc_out), .data_inB(B_mux), .control(reg_read),.out(addr_a)); 
@@ -63,7 +63,7 @@ Five_Bit_Register Flag_reg(.D_in(Flags), .wEnable(Flags_Enable), .reset(reset), 
 MUX_2to1 ALU_Bus_MUX(.data_inA(q_a), .data_inB(ALU_Out_Bus), .control(ALU_Bus_control), .out(ALU_Bus));
 
 //B Ram
-bram storage(.data_a(data_a), .data_b(data_b), .addr_a(addr_a), .addr_b(addr_b), .we_a(we_a), .we_b(we_b), .clk(clk), .q_a(q_a), .q_b(q_b));
+bram storage(.data_a(A_mux), .data_b(data_b), .addr_a(addr_a), .addr_b(addr_b), .we_a(WrtBrm_en), .we_b(we_b), .clk(clk), .q_a(q_a), .q_b(q_b));
 
 
 endmodule 
