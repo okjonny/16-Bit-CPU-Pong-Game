@@ -10,8 +10,10 @@ output reg [7:0] instruction_out;
 
 
 //Exract registers from instruction
-output reg [3:0] R_src;
-output reg [3:0] R_dest;
+output [3:0] R_src;
+assign R_src = instruction_in[3:0];
+output [3:0] R_dest;
+assign R_dest = instruction_in[11:8];
 
 wire [7:0] op = {instruction_in[15:12], instruction_in[7:4]};
 
@@ -61,9 +63,6 @@ always @(instruction_in, op,R_src)
 					immediate = 16'b0000000000000000;
 					RI_out = 0;
 					instr_type = 2'b00;
-					R_src = instruction_in[3:0];
-					R_dest = instruction_in[11:8];
-
 				end
 				
 			MUL:
@@ -74,8 +73,6 @@ always @(instruction_in, op,R_src)
 					RI_out = 0;
 					instr_type = 2'b00;
 
-					R_src = instruction_in[3:0];
-					R_dest = instruction_in[11:8];
 				end
 				
 			ADDI:
@@ -89,8 +86,6 @@ always @(instruction_in, op,R_src)
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
-					R_src = instruction_in[3:0];
-					R_dest = instruction_in[11:8];
 				end
 			
 			MULI:
@@ -104,8 +99,6 @@ always @(instruction_in, op,R_src)
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
-					R_src = instruction_in[3:0];
-					R_dest = instruction_in[11:8];
 				end
 				
 			SUBI:
@@ -119,8 +112,6 @@ always @(instruction_in, op,R_src)
 					immediate = {ipad, ~instruction_in[7:4], ~R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
-					R_src = instruction_in[3:0];
-					R_dest = instruction_in[11:8];
 				end
 			
 			CMPI:
@@ -134,8 +125,6 @@ always @(instruction_in, op,R_src)
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
-					R_src = instruction_in[3:0];
-					R_dest = instruction_in[11:8];
 				end
 				
 			ANDI:
@@ -145,8 +134,6 @@ always @(instruction_in, op,R_src)
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
-					R_src = instruction_in[3:0];
-					R_dest = instruction_in[11:8];
 				end
 			
 			ORI:
@@ -156,8 +143,6 @@ always @(instruction_in, op,R_src)
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
-					R_src = instruction_in[3:0];
-					R_dest = instruction_in[11:8];
 				end
 			
 			XORI:
@@ -167,8 +152,6 @@ always @(instruction_in, op,R_src)
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
-					R_src = instruction_in[3:0];
-					R_dest = instruction_in[11:8];
 				end
 				
 			MOVI:
@@ -178,8 +161,6 @@ always @(instruction_in, op,R_src)
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
-					R_src = instruction_in[3:0];
-					R_dest = instruction_in[11:8];
 				end
 				
 			STORE:
@@ -189,8 +170,6 @@ always @(instruction_in, op,R_src)
 					immediate = 16'b0000000000000000;
 					RI_out = 0;
 					instr_type = 2'b01;
-					R_src = instruction_in[11:8];
-					R_dest = instruction_in[3:0];
 				end
 				
 			LOAD:
@@ -200,8 +179,6 @@ always @(instruction_in, op,R_src)
 					immediate = 16'b0000000000000000;
 					RI_out = 0;
 					instr_type = 2'b10;
-					R_src = instruction_in[3:0];
-					R_dest = instruction_in[11:8];
 				end
 			
 			default:
@@ -211,8 +188,6 @@ always @(instruction_in, op,R_src)
 					immediate = 16'b0000000000000000;
 					RI_out = 1;
 					instr_type = 2'b11;
-					R_src = instruction_in[3:0];
-					R_dest = instruction_in[11:8];
 				end
 		endcase
 	end
