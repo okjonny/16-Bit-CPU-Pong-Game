@@ -10,10 +10,10 @@ output reg [7:0] instruction_out;
 
 
 //Exract registers from instruction
-output [3:0] R_src;
-assign R_src = instruction_in[3:0];
-output [3:0] R_dest;
-assign R_dest = instruction_in[11:8];
+output reg [3:0] R_src;
+//assign R_src = instruction_in[3:0];
+output reg [3:0] R_dest;
+//assign R_dest = instruction_in[11:8];
 
 wire [7:0] op = {instruction_in[15:12], instruction_in[7:4]};
 
@@ -53,8 +53,19 @@ parameter STORE = 8'b01000100;
 //parameter STOR =  8'b01000100;
 
 
-always @(instruction_in, op,R_src)
+always @(instruction_in, op, R_src, R_dest)
 	begin 
+		if(op == STORE)
+			begin
+				R_src = instruction_in[11:8];
+				R_dest = instruction_in[3:0];
+			end
+		else
+			begin
+				R_src = instruction_in[3:0];
+				R_dest = instruction_in[11:8];
+			end
+			
 		casex(op)
 			ADD, SUB, OR, CMP, AND, XOR, MOV, LSH, ASHU:
 				begin		
@@ -187,7 +198,7 @@ always @(instruction_in, op,R_src)
 					ipad = 8'b00000000;
 					immediate = 16'b0000000000000000;
 					RI_out = 1;
-					instr_type = 2'b11;
+					instr_type = 2'bxx;
 				end
 		endcase
 	end
