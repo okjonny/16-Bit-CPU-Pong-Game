@@ -66,6 +66,7 @@ set_global_assignment -name EDA_TEST_BENCH_NAME tb_CPU -section_id eda_simulatio
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_CPU
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_CPU -section_id tb_CPU
 set_global_assignment -name EDA_TEST_BENCH_FILE tb_CPU.v -section_id tb_CPU
+set_global_assignment -name VERILOG_FILE instruction_reg.v
 set_global_assignment -name VERILOG_FILE CPU_FSM.v
 set_global_assignment -name VERILOG_FILE RegBank.v
 set_global_assignment -name VERILOG_FILE MUX_16to1.v
