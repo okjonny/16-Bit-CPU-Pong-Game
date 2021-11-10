@@ -3,7 +3,7 @@ input d_enable, clk;
 input [15:0] instr_in;
 output reg [15:0] instr_out;
 
-    always @ (posedge clk)
+    always @ (negedge clk)
         if (d_enable) 
         begin
             instr_out <= instr_in;
