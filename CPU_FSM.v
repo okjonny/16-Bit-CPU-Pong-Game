@@ -49,7 +49,7 @@ module CPU_FSM
 			 S2: begin PC_enable = 0; R_enable = 1; IR_enable = 0; ALU_Bus_enable = 1; reg_read = 0; WrtBrm_en = 0; end //Execute/Write-Back alu will write back to reg and not bram
 			 S3: begin PC_enable = 0; R_enable = 0; IR_enable = 0; ALU_Bus_enable = 0; reg_read = 1; WrtBrm_en = 1; end //STORE
 			 S4: begin PC_enable = 0; R_enable = 1; IR_enable = 0; ALU_Bus_enable = 0; reg_read = 1; WrtBrm_en = 0; end //LOAD
-			 S5: begin PC_enable = 0; R_enable = 0; IR_enable = 0; ALU_Bus_enable = 0; reg_read = 0; WrtBrm_en = 0; end //store data to regfile via ALU_mux
+			 S5: begin PC_enable = 0; R_enable = 1; IR_enable = 0; ALU_Bus_enable = 0; reg_read = 0; WrtBrm_en = 0; end //store data to regfile via ALU_mux
 			 S6: begin PC_enable = 0; R_enable = 0; IR_enable = 0; ALU_Bus_enable = 1; reg_read = 0; WrtBrm_en = 0; end // Give store one more clock cycle.
 			 // Between S4 and S5, may have to go back and switch PC_enable, need to see if it fails
 		endcase
