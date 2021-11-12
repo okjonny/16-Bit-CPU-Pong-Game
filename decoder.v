@@ -1,4 +1,4 @@
-module decoder(instruction_in, instruction_out, R_dest, R_src, immediate, RI_out, instr_type);
+module decoder(instruction_in, instruction_out, R_dest, R_src, immediate, RI_out, instr_type, is_load);
 
 input [15:0] instruction_in;
 
@@ -22,6 +22,7 @@ output reg RI_out; //0 is register, 1 is immediate for RI_out
 
 //00 is R-Type, 01 is STORE, 10 is LOAD
 output reg [1:0] instr_type;
+output reg is_load = 0;
 
 // Parameter Defintions:
 parameter ADD = 	8'b00000101;
@@ -55,7 +56,7 @@ parameter STORE = 8'b01000100;
 
 always @(instruction_in, op, R_src, R_dest)
 	begin 
-		if(op == STORE)
+		if(op == STORE || op == LOAD)
 			begin
 				R_src = instruction_in[11:8];
 				R_dest = instruction_in[3:0];
@@ -74,6 +75,7 @@ always @(instruction_in, op, R_src, R_dest)
 					immediate = 16'b0000000000000000;
 					RI_out = 0;
 					instr_type = 2'b00;
+					is_load = 0;
 				end
 				
 			MUL:
@@ -83,7 +85,7 @@ always @(instruction_in, op, R_src, R_dest)
 					immediate = 16'b0000000000000000;
 					RI_out = 0;
 					instr_type = 2'b00;
-
+					is_load = 0;
 				end
 				
 			ADDI:
@@ -97,6 +99,7 @@ always @(instruction_in, op, R_src, R_dest)
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
+					is_load = 0;
 				end
 			
 			MULI:
@@ -110,6 +113,7 @@ always @(instruction_in, op, R_src, R_dest)
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
+					is_load = 0;
 				end
 				
 			SUBI:
@@ -123,6 +127,7 @@ always @(instruction_in, op, R_src, R_dest)
 					immediate = {ipad, ~instruction_in[7:4], ~R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
+					is_load = 0;
 				end
 			
 			CMPI:
@@ -136,6 +141,7 @@ always @(instruction_in, op, R_src, R_dest)
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
+					is_load = 0;
 				end
 				
 			ANDI:
@@ -154,6 +160,7 @@ always @(instruction_in, op, R_src, R_dest)
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
+					is_load = 0;
 				end
 			
 			XORI:
@@ -163,6 +170,7 @@ always @(instruction_in, op, R_src, R_dest)
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
+					is_load = 0;
 				end
 				
 			MOVI:
@@ -172,6 +180,7 @@ always @(instruction_in, op, R_src, R_dest)
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
 					instr_type = 2'b00;
+					is_load = 0;
 				end
 				
 			STORE:
@@ -181,6 +190,7 @@ always @(instruction_in, op, R_src, R_dest)
 					immediate = 16'b0000000000000000;
 					RI_out = 0;
 					instr_type = 2'b01;
+					is_load = 0;
 				end
 				
 			LOAD:
@@ -190,6 +200,7 @@ always @(instruction_in, op, R_src, R_dest)
 					immediate = 16'b0000000000000000;
 					RI_out = 0;
 					instr_type = 2'b10;
+					is_load = 1;
 				end
 			
 			default:
@@ -199,6 +210,7 @@ always @(instruction_in, op, R_src, R_dest)
 					immediate = 16'b0000000000000000;
 					RI_out = 1;
 					instr_type = 2'bxx;
+					is_load = 0;
 				end
 		endcase
 	end

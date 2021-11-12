@@ -4,8 +4,8 @@ wire [3:0] A_Mux_input, B_Mux_input;
 wire[3:0] Reg_Enable;
 wire [4:0] Flags;
 input clk,reset;
-wire [15:0] Immediate, instr_out, data_a, data_b, addr_a, addr_b, q_a, q_b, pc_out;
-wire ALU_Bus_enable, Flags_Enable, cin, PC_enable, IR_enable, r_i_switch, R_enable, we_a, we_b, ALU_Bus_control, reg_read, WrtBrm_en;
+wire [15:0] Immediate, instr_out, data_a, data_b, addr_a, addr_b, q_a, q_b, pc_out, load_store_wire;
+wire ALU_Bus_enable, Flags_Enable, cin, PC_enable, IR_enable, r_i_switch, R_enable, we_a, we_b, ALU_Bus_control, reg_read, WrtBrm_en, is_load;
 wire [7:0] OP, muxes;
 wire[15:0] r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
 wire [15:0] A_mux, B_mux, ALU_Bus, Imm_out;
@@ -17,8 +17,12 @@ output wire [15:0] ALU_Out_Bus;
 //FSM
 CPU_FSM FSM(.clk(clk), .reset(reset), .PC_enable(PC_enable), .IR_enable(IR_enable), .R_enable(R_enable) , .ALU_Bus_enable(ALU_Bus_control), .instr_type(instr_type), .reg_read(reg_read), .WrtBrm_en(WrtBrm_en));
 
+
+//MUX that switches between A mux for reg (load) and B mux for Reg (store)
+MUX_2to1 Load_Store_MUX(.data_inA(B_mux), .data_inB(A_mux), .control(is_load),.out(load_store_wire)); 
+
 //MUX that switches between PC (R-type) and Reg (D-type)
-MUX_2to1 PC_Reg_MUX(.data_inA(pc_out), .data_inB(B_mux), .control(reg_read),.out(addr_a)); 
+MUX_2to1 PC_Reg_MUX(.data_inA(pc_out), .data_inB(load_store_wire), .control(reg_read),.out(addr_a)); 
 
 //Program counter
 program_counter PC(.clk(clk), .reset(reset), .pc_enable(PC_enable), .pc_out(pc_out));
@@ -27,7 +31,7 @@ program_counter PC(.clk(clk), .reset(reset), .pc_enable(PC_enable), .pc_out(pc_o
 instruction_reg Instruction_Register(.d_enable(IR_enable), .clk(clk), .instr_in(q_a), .instr_out(instr_out));
 
 //Decoder
-decoder Dec(.instruction_in(instr_out), .instruction_out(OP), .R_dest(B_Mux_input), .R_src(A_Mux_input), .immediate(Immediate), .RI_out(r_i_switch), .instr_type(instr_type));
+decoder Dec(.instruction_in(instr_out), .instruction_out(OP), .R_dest(B_Mux_input), .R_src(A_Mux_input), .immediate(Immediate), .RI_out(r_i_switch), .instr_type(instr_type), .is_load(is_load));
 
 // Reads in a 4 bit reg_enable and turns it to 16 bit reg_enable.
 Decoder_4to16 Decode_Reg_Enable(.Decode_In(B_Mux_input), .Decode_Out(Reg_Enable_16), .write_enable(R_enable));	 
