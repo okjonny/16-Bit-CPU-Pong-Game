@@ -47,6 +47,8 @@ parameter LSHI = 	8'b1000xxxx;
 parameter LUI = 	8'b1111xxxx;
 parameter LOAD =  8'b01000000;
 parameter STORE = 8'b01000100;
+parameter JUMP = 8'
+parameter BRANCH = 
 
 
 //Implement LOAD and STOR later!
@@ -202,6 +204,147 @@ always @(instruction_in, op, R_src, R_dest)
 					instr_type = 2'b10;
 					is_load = 1;
 				end
+				
+				
+				//Jump unconditional
+		  8'b01001110 : begin
+//			rdst = 4'bx; // EQ
+//			rsrc = 4'bx;	
+//			immediate = raw_instructions[7:0];
+//			flag_type = 4'b1000; // Jump 
+					
+					instruction_out = op;
+					if(instruction_in[7] == 1)
+						ipad = 8'b11111111;
+					else
+						ipad = 8'b00000000;
+					immediate = {ipad, instruction_in[7:0]};
+					RI_out = 1'bx;
+					instr_type = 2'b11;
+					is_load = 0;
+		end
+
+		  //JEQ: 01000000
+		  8'b01000000 : begin
+					instruction_out = op;
+					if(instruction_in[7] == 1)
+						ipad = 8'b11111111;
+					else
+						ipad = 8'b00000000;
+					immediate = {ipad, instruction_in[7:0]};
+					RI_out = 1'bx;
+					instr_type = 2'b11;
+					is_load = 0;
+		end
+		
+		  // JNE: 01000001
+		  8'b01000001 : begin
+					instruction_out = op;
+					if(instruction_in[7] == 1)
+						ipad = 8'b11111111;
+					else
+						ipad = 8'b00000000;
+					immediate = {ipad, instruction_in[7:0]};
+					RI_out = 1'bx;
+					instr_type = 2'b11;
+					is_load = 0;
+			end
+			
+		  //JGT: 01000110
+		 8'b01000110 : begin
+					instruction_out = op;
+					if(instruction_in[7] == 1)
+						ipad = 8'b11111111;
+					else
+						ipad = 8'b00000000;
+					immediate = {ipad, instruction_in[7:0]};
+					RI_out = 1'bx;
+					instr_type = 2'b11;
+					is_load = 0; 
+			end
+			
+		  //JLE: 01000111
+		   8'b01000111 : begin
+					instruction_out = op;
+					if(instruction_in[7] == 1)
+						ipad = 8'b11111111;
+					else
+						ipad = 8'b00000000;
+					immediate = {ipad, instruction_in[7:0]};
+					RI_out = 1'bx;
+					instr_type = 2'b11;
+					is_load = 0;
+	end		
+		 
+		 //Branch unconditional
+		  8'b11001110 : begin
+					instruction_out = op;
+					if(instruction_in[7] == 1)
+						ipad = 8'b11111111;
+					else
+						ipad = 8'b00000000;
+					immediate = {ipad, instruction_in[7:0]};
+					RI_out = 1'bx;
+					instr_type = 2'b11;
+					is_load = 0;
+		end
+		 
+		 //BEQ: 11000000
+		 8'b11000000 : begin
+					instruction_out = op;
+					if(instruction_in[7] == 1)
+						ipad = 8'b11111111;
+					else
+						ipad = 8'b00000000;
+					immediate = {ipad, instruction_in[7:0]};
+					RI_out = 1'bx;
+					instr_type = 2'b11;
+					is_load = 0;
+			end	
+			
+		 //BNE: 11000001
+		 8'b11000001 : begin
+					instruction_out = op;
+					if(instruction_in[7] == 1)
+						ipad = 8'b11111111;
+					else
+						ipad = 8'b00000000;
+					immediate = {ipad, instruction_in[7:0]};
+					RI_out = 1'bx;
+					instr_type = 2'b11;
+					is_load = 0;
+			end
+			
+		 //BGT: 11000110
+		 8'b11000110 : begin
+					instruction_out = op;
+					if(instruction_in[7] == 1)
+						ipad = 8'b11111111;
+					else
+						ipad = 8'b00000000;
+					immediate = {ipad, instruction_in[7:0]};
+					RI_out = 1'bx;
+					instr_type = 2'b11;
+					is_load = 0;
+			end
+			
+		 //BLE: 11000111
+		 8'b11000111 : begin
+					instruction_out = op;
+					if(instruction_in[7] == 1)
+						ipad = 8'b11111111;
+					else
+						ipad = 8'b00000000;
+					immediate = {ipad, instruction_in[7:0]};
+					RI_out = 1'bx;
+					instr_type = 2'b11;
+					is_load = 0;
+			end
+			
+			
+			
+			
+			
 			
 			default:
 				begin
