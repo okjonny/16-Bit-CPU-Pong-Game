@@ -1,4 +1,4 @@
-module decoder(instruction_in, instruction_out, R_dest, R_src, immediate, RI_out, instr_type, is_load);
+module decoder(instruction_in, instruction_out, R_dest, R_src, immediate, RI_out, instr_type, cond_type, is_load);
 
 input [15:0] instruction_in;
 
@@ -21,7 +21,7 @@ reg [7:0] ipad;
 output reg RI_out; //0 is register, 1 is immediate for RI_out
 
 //00 is R-Type, 01 is STORE, 10 is LOAD
-output reg [1:0] instr_type;
+output reg [1:0] instr_type, cond_type;
 output reg is_load = 0;
 
 // Parameter Defintions:
@@ -47,14 +47,10 @@ parameter LSHI = 	8'b1000xxxx;
 parameter LUI = 	8'b1111xxxx;
 parameter LOAD =  8'b01000000;
 parameter STORE = 8'b01000100;
-parameter JUMP = 8'
-parameter BRANCH = 
 
-
-//Implement LOAD and STOR later!
-//parameter LOAD =  8'b01000000;
-//parameter STOR =  8'b01000100;
-
+parameter JCOND = 8'b01001100;
+parameter JAL =   8'b01001000;
+parameter BCOND = 8'b1100xxxx;
 
 always @(instruction_in, op, R_src, R_dest)
 	begin 
@@ -65,8 +61,8 @@ always @(instruction_in, op, R_src, R_dest)
 			end
 		else
 			begin
-				R_src = instruction_in[3:0];
-				R_dest = instruction_in[11:8];
+				R_src = instruction_in[3:0]; // rtarget for jump
+				R_dest = instruction_in[11:8]; // cond
 			end
 			
 		casex(op)
@@ -207,20 +203,12 @@ always @(instruction_in, op, R_src, R_dest)
 				
 				
 				//Jump unconditional
-		  8'b01001110 : begin
-//			rdst = 4'bx; // EQ
-//			rsrc = 4'bx;	
-//			immediate = raw_instructions[7:0];
-//			flag_type = 4'b1000; // Jump 
-					
-					instruction_out = op;
-					if(instruction_in[7] == 1)
-						ipad = 8'b11111111;
-					else
-						ipad = 8'b00000000;
-					immediate = {ipad, instruction_in[7:0]};
-					RI_out = 1'bx;
+		  JCOND: begin
+					instruction_out = JCOND;
 					instr_type = 2'b11;
+					ipad = 8'b00000000;
+					immediate = {12'b000000000000, instruction_in[11:8]}; // cond
+					RI_out = 0;
 					is_load = 0;
 		end
 
