@@ -1,5 +1,5 @@
 module CPU(clk, reset, Flag_Reg_Output, ALU_Out_Bus); 
-wire [1:0] instr_type;
+wire [2:0] instr_type;
 wire [3:0] A_Mux_input, B_Mux_input;
 wire[3:0] Reg_Enable, cond_type;
 wire [4:0] Flags;
@@ -18,7 +18,7 @@ output wire [15:0] ALU_Out_Bus;
 CPU_FSM FSM(.clk(clk), .reset(reset), .PC_enable(PC_enable), .IR_enable(IR_enable), .R_enable(R_enable) , .ALU_Bus_enable(ALU_Bus_control), .instr_type(instr_type), .reg_read(reg_read), .WrtBrm_en(WrtBrm_en), .Flags_Enable(Flags_Enable));
 
 // Program Counter Displace
-pc_displace PC_displacer(.pc_in(pc_out), .op(OP), .flags(Flags), .imm_in(B_mux), .dis_out(displacement), .condition(Immediate));
+pc_displace PC_displacer(.pc_in(pc_out), .op(OP), .flags(Flag_Reg_Output), .imm_in(A_mux), .dis_out(displacement), .condition(Immediate));
 
 //MUX that switches between A mux for reg (load) and B mux for Reg (store)
 MUX_2to1 Load_Store_MUX(.data_inA(B_mux), .data_inB(A_mux), .control(is_load),.out(load_store_wire)); 

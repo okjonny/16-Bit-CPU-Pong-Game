@@ -135,7 +135,7 @@ always @(A, B, Op)
 				Flags[3] = Output == 0;
 				Flags[4] = 1'bx;
 			end
-			
+//			
 		default:
 			begin
 				Output = 16'b0;

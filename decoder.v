@@ -21,7 +21,7 @@ reg [7:0] ipad;
 output reg RI_out; //0 is register, 1 is immediate for RI_out
 
 //00 is R-Type, 01 is STORE, 10 is LOAD
-output reg [1:0] instr_type, cond_type;
+output reg [2:0] instr_type, cond_type;
 output reg is_load = 0;
 
 // Parameter Defintions:
@@ -72,7 +72,7 @@ always @(instruction_in, op, R_src, R_dest)
 					ipad = 8'b00000000; 
 					immediate = 16'b0000000000000000;
 					RI_out = 0;
-					instr_type = 2'b00;
+					instr_type = 3'b000;
 					is_load = 0;
 				end
 				
@@ -82,7 +82,7 @@ always @(instruction_in, op, R_src, R_dest)
 					ipad = 8'b00000000;
 					immediate = 16'b0000000000000000;
 					RI_out = 0;
-					instr_type = 2'b00;
+					instr_type = 3'b000;
 					is_load = 0;
 				end
 				
@@ -96,7 +96,7 @@ always @(instruction_in, op, R_src, R_dest)
 					
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
-					instr_type = 2'b00;
+					instr_type = 3'b000;
 					is_load = 0;
 				end
 			
@@ -110,7 +110,7 @@ always @(instruction_in, op, R_src, R_dest)
 					
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
-					instr_type = 2'b00;
+					instr_type = 3'b000;
 					is_load = 0;
 				end
 				
@@ -124,7 +124,7 @@ always @(instruction_in, op, R_src, R_dest)
 						
 					immediate = {ipad, ~instruction_in[7:4], ~R_src};
 					RI_out = 1;
-					instr_type = 2'b00;
+					instr_type = 3'b000;
 					is_load = 0;
 				end
 			
@@ -138,7 +138,7 @@ always @(instruction_in, op, R_src, R_dest)
 					
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
-					instr_type = 2'b00;
+					instr_type = 3'b000;
 					is_load = 0;
 				end
 				
@@ -148,7 +148,7 @@ always @(instruction_in, op, R_src, R_dest)
 					ipad = 8'b00000000;
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
-					instr_type = 2'b00;
+					instr_type = 3'b000;
 				end
 			
 			ORI:
@@ -157,7 +157,7 @@ always @(instruction_in, op, R_src, R_dest)
 					ipad = 8'b00000000;
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
-					instr_type = 2'b00;
+					instr_type = 3'b000;
 					is_load = 0;
 				end
 			
@@ -167,7 +167,7 @@ always @(instruction_in, op, R_src, R_dest)
 					ipad = 8'b00000000;
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
-					instr_type = 2'b00;
+					instr_type = 3'b000;
 					is_load = 0;
 				end
 				
@@ -177,7 +177,7 @@ always @(instruction_in, op, R_src, R_dest)
 					ipad = 8'b00000000;
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
-					instr_type = 2'b00;
+					instr_type = 3'b000;
 					is_load = 0;
 				end
 				
@@ -187,7 +187,7 @@ always @(instruction_in, op, R_src, R_dest)
 					ipad = 8'b00000000;
 					immediate = 16'b0000000000000000;
 					RI_out = 0;
-					instr_type = 2'b01;
+					instr_type = 3'b001;
 					is_load = 0;
 				end
 				
@@ -197,7 +197,7 @@ always @(instruction_in, op, R_src, R_dest)
 					ipad = 8'b00000000;
 					immediate = 16'b0000000000000000;
 					RI_out = 0;
-					instr_type = 2'b10;
+					instr_type = 3'b010;
 					is_load = 1;
 				end
 				
@@ -205,142 +205,29 @@ always @(instruction_in, op, R_src, R_dest)
 				//Jump unconditional
 		  JCOND: begin
 					instruction_out = JCOND;
-					instr_type = 2'b11;
+					instr_type = 3'b011;
 					ipad = 8'b00000000;
 					immediate = {12'b000000000000, instruction_in[11:8]}; // cond
 					RI_out = 0;
 					is_load = 0;
-		end
-
-		  //JEQ: 01000000
-		  8'b01000000 : begin
-					instruction_out = op;
-					if(instruction_in[7] == 1)
-						ipad = 8'b11111111;
-					else
-						ipad = 8'b00000000;
-					immediate = {ipad, instruction_in[7:0]};
-					RI_out = 1'bx;
-					instr_type = 2'b11;
-					is_load = 0;
-		end
-		
-		  // JNE: 01000001
-		  8'b01000001 : begin
-					instruction_out = op;
-					if(instruction_in[7] == 1)
-						ipad = 8'b11111111;
-					else
-						ipad = 8'b00000000;
-					immediate = {ipad, instruction_in[7:0]};
-					RI_out = 1'bx;
-					instr_type = 2'b11;
-					is_load = 0;
-			end
-			
-		  //JGT: 01000110
-		 8'b01000110 : begin
-					instruction_out = op;
-					if(instruction_in[7] == 1)
-						ipad = 8'b11111111;
-					else
-						ipad = 8'b00000000;
-					immediate = {ipad, instruction_in[7:0]};
-					RI_out = 1'bx;
-					instr_type = 2'b11;
-					is_load = 0; 
-			end
-			
-		  //JLE: 01000111
-		   8'b01000111 : begin
-					instruction_out = op;
-					if(instruction_in[7] == 1)
-						ipad = 8'b11111111;
-					else
-						ipad = 8'b00000000;
-					immediate = {ipad, instruction_in[7:0]};
-					RI_out = 1'bx;
-					instr_type = 2'b11;
-					is_load = 0;
-	end		
+		end	
 		 
 		 //Branch unconditional
-		  8'b11001110 : begin
-					instruction_out = op;
-					if(instruction_in[7] == 1)
-						ipad = 8'b11111111;
-					else
-						ipad = 8'b00000000;
-					immediate = {ipad, instruction_in[7:0]};
-					RI_out = 1'bx;
-					instr_type = 2'b11;
+		  BCOND: begin
+					instruction_out = BCOND;
+					instr_type = 3'b100;
+					ipad = 8'b00000000;
+					immediate = {4'b0000,instruction_in[7:0],instruction_in[11:8]}; // cond
+					RI_out = 0;
 					is_load = 0;
 		end
-		 
-		 //BEQ: 11000000
-		 8'b11000000 : begin
-					instruction_out = op;
-					if(instruction_in[7] == 1)
-						ipad = 8'b11111111;
-					else
-						ipad = 8'b00000000;
-					immediate = {ipad, instruction_in[7:0]};
-					RI_out = 1'bx;
-					instr_type = 2'b11;
-					is_load = 0;
-			end	
-			
-		 //BNE: 11000001
-		 8'b11000001 : begin
-					instruction_out = op;
-					if(instruction_in[7] == 1)
-						ipad = 8'b11111111;
-					else
-						ipad = 8'b00000000;
-					immediate = {ipad, instruction_in[7:0]};
-					RI_out = 1'bx;
-					instr_type = 2'b11;
-					is_load = 0;
-			end
-			
-		 //BGT: 11000110
-		 8'b11000110 : begin
-					instruction_out = op;
-					if(instruction_in[7] == 1)
-						ipad = 8'b11111111;
-					else
-						ipad = 8'b00000000;
-					immediate = {ipad, instruction_in[7:0]};
-					RI_out = 1'bx;
-					instr_type = 2'b11;
-					is_load = 0;
-			end
-			
-		 //BLE: 11000111
-		 8'b11000111 : begin
-					instruction_out = op;
-					if(instruction_in[7] == 1)
-						ipad = 8'b11111111;
-					else
-						ipad = 8'b00000000;
-					immediate = {ipad, instruction_in[7:0]};
-					RI_out = 1'bx;
-					instr_type = 2'b11;
-					is_load = 0;
-			end
-			
-			
-			
-			
-			
-			
 			default:
 				begin
 					instruction_out = 8'b00000000;
 					ipad = 8'b00000000;
 					immediate = 16'b0000000000000000;
 					RI_out = 1;
-					instr_type = 2'bxx;
+					instr_type = 3'bxxx;
 					is_load = 0;
 				end
 		endcase

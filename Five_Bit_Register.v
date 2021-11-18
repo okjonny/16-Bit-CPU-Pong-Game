@@ -6,7 +6,7 @@ module Five_Bit_Register(D_in, wEnable, reset, clk, r
 	 
  always @( posedge clk, negedge reset)
 	begin
-	if (!reset) r <= 5'b00000;
+	if (~reset) r <= 5'b00000;
 	else
 		begin			
 			if (wEnable)
@@ -19,4 +19,4 @@ module Five_Bit_Register(D_in, wEnable, reset, clk, r
 				end
 		end
 	end
-endmodule
+endmodule 
