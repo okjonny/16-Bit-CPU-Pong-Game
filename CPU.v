@@ -4,8 +4,8 @@ wire [3:0] A_Mux_input, B_Mux_input;
 wire[3:0] Reg_Enable, cond_type;
 wire [4:0] Flags;
 input clk,reset;
-wire [15:0] Immediate, instr_out, data_a, data_b, addr_a, addr_b, q_a, q_b, pc_out, load_store_wire;
-wire ALU_Bus_enable, Flags_Enable, cin, PC_enable, PC_jump_enable, IR_enable, r_i_switch, R_enable, we_a, we_b, ALU_Bus_control, reg_read, WrtBrm_en, is_load;
+wire [15:0] Immediate, instr_out, data_a, data_b, addr_a, addr_b, q_a, q_b, pc_out, load_store_wire, memory_link_wire, link;
+wire ALU_Bus_enable, Flags_Enable, cin, PC_enable, PC_jump_enable, IR_enable, r_i_switch, R_enable, we_a, we_b, ALU_Bus_control, reg_read, WrtBrm_en, is_load, memory_link_control;
 wire [7:0] OP, muxes;
 wire[15:0] r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
 wire [15:0] A_mux, B_mux, ALU_Bus, Imm_out;
@@ -15,10 +15,10 @@ output [4:0] Flag_Reg_Output;
 output wire [15:0] ALU_Out_Bus;
 
 //FSM
-CPU_FSM FSM(.clk(clk), .reset(reset), .PC_enable(PC_enable), .IR_enable(IR_enable), .R_enable(R_enable) , .ALU_Bus_enable(ALU_Bus_control), .instr_type(instr_type), .reg_read(reg_read), .WrtBrm_en(WrtBrm_en), .Flags_Enable(Flags_Enable));
+CPU_FSM FSM(.clk(clk), .reset(reset), .PC_enable(PC_enable), .IR_enable(IR_enable), .R_enable(R_enable) , .ALU_Bus_enable(ALU_Bus_control), .instr_type(instr_type), .reg_read(reg_read), .WrtBrm_en(WrtBrm_en), .Flags_Enable(Flags_Enable), .link_en(memory_link_control));
 
 // Program Counter Displace
-pc_displace PC_displacer(.pc_in(pc_out), .op(OP), .flags(Flag_Reg_Output), .imm_in(A_mux), .dis_out(displacement), .condition(Immediate));
+pc_displace PC_displacer(.pc_in(pc_out), .op(OP), .flags(Flag_Reg_Output), .imm_in(A_mux), .link_out(link), .dis_out(displacement), .condition(Immediate));
 
 //MUX that switches between A mux for reg (load) and B mux for Reg (store)
 MUX_2to1 Load_Store_MUX(.data_inA(B_mux), .data_inB(A_mux), .control(is_load),.out(load_store_wire)); 
@@ -56,17 +56,12 @@ ALU main(.A(A_mux),.B(Imm_out),.Op(OP),.Flags(Flags), .Output(ALU_Out_Bus));
 // Stores the flags.
 Five_Bit_Register Flag_reg(.D_in(Flags), .wEnable(Flags_Enable), .reset(reset), .clk(clk), .r(Flag_Reg_Output));
 
-// Allows the bus to write to the registers.
-//tri_buf ALU_buf(.enable(Tri_Enable_ALU), .D(ALU_Out_Bus),.Q(ALU_Bus));
-
-// Allows the Bram to write to the registers.
-
-//We are reading from BRAM's A output, B is reserved for peripherals
-//tri_buf B_Ram(.enable(Tri_Enable_BRAM), .D(q_a), .Q(ALU_Bus));
+//MUX to switch between BRAM and Rlink
+MUX_2to1 PC_Link_MUX(.data_inA(q_a), .data_inB(link), .control(memory_link_control), .out(memory_link_wire));
 
 
 //If control == 1, ALU Bus is enabled, else BRAM
-MUX_2to1 ALU_Bus_MUX(.data_inA(q_a), .data_inB(ALU_Out_Bus), .control(ALU_Bus_control), .out(ALU_Bus));
+MUX_2to1 ALU_Bus_MUX(.data_inA(memory_link_wire), .data_inB(ALU_Out_Bus), .control(ALU_Bus_control), .out(ALU_Bus));
 
 //B Ram
 bram storage(.data_a(A_mux), .data_b(data_b), .addr_a(addr_a), .addr_b(addr_b), .we_a(WrtBrm_en), .we_b(we_b), .clk(clk), .q_a(q_a), .q_b(q_b));

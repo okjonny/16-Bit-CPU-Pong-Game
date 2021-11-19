@@ -202,25 +202,34 @@ always @(instruction_in, op, R_src, R_dest)
 				end
 				
 				
-				//Jump unconditional
+				//Jump conditional
 		  JCOND: begin
-					instruction_out = JCOND;
-					instr_type = 3'b011;
+						instruction_out = JCOND;
+						instr_type = 3'b011;
+						ipad = 8'b00000000;
+						immediate = {12'b000000000000, instruction_in[11:8]}; // cond
+						RI_out = 0;
+						is_load = 0;
+					end	
+			//Jump and link		
+		  JAL: begin
+					instruction_out = JAL;
+					instr_type = 3'b101;
 					ipad = 8'b00000000;
-					immediate = {12'b000000000000, instruction_in[11:8]}; // cond
+					immediate = 16'b0000000000000000;
 					RI_out = 0;
-					is_load = 0;
-		end	
-		 
+					is_load = 1;
+				end
+			
 		 //Branch unconditional
 		  BCOND: begin
-					instruction_out = BCOND;
-					instr_type = 3'b100;
-					ipad = 8'b00000000;
-					immediate = {4'b0000,instruction_in[7:0],instruction_in[11:8]}; // cond
-					RI_out = 0;
-					is_load = 0;
-		end
+						instruction_out = BCOND;
+						instr_type = 3'b100;
+						ipad = 8'b00000000;
+						immediate = {4'b0000,instruction_in[7:0],instruction_in[11:8]}; // cond
+						RI_out = 0;
+						is_load = 0;
+					end
 			default:
 				begin
 					instruction_out = 8'b00000000;
