@@ -66,5 +66,4 @@ MUX_2to1 ALU_Bus_MUX(.data_inA(memory_link_wire), .data_inB(ALU_Out_Bus), .contr
 //B Ram
 bram storage(.data_a(A_mux), .data_b(data_b), .addr_a(addr_a), .addr_b(addr_b), .we_a(WrtBrm_en), .we_b(we_b), .clk(clk), .q_a(q_a), .q_b(q_b));
 
-
 endmodule 

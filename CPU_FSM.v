@@ -62,7 +62,7 @@ module CPU_FSM
 			 S4: begin PC_enable = 0; R_enable = 0; IR_enable = 0; ALU_Bus_enable = 0; reg_read = 1; WrtBrm_en = 0; Flags_Enable = 0; link_en = 0; end //LOAD
 			 S5: begin PC_enable = 0; R_enable = 1; IR_enable = 0; ALU_Bus_enable = 0; reg_read = 0; WrtBrm_en = 0; Flags_Enable = 0; link_en = 0; end //store data to regfile via ALU_mux
 			 S6: begin PC_enable = 0; R_enable = 0; IR_enable = 0; ALU_Bus_enable = 1; reg_read = 0; WrtBrm_en = 0; Flags_Enable = 0; link_en = 0; end // Give store one more clock cycle.
-			 S7: begin PC_enable = 0; R_enable = 1; IR_enable = 0; ALU_Bus_enable = 1; reg_read = 0; WrtBrm_en = 0; Flags_Enable = 0; link_en = 0; end // Jump
+			 S7: begin PC_enable = 0; R_enable = 0; IR_enable = 0; ALU_Bus_enable = 1; reg_read = 0; WrtBrm_en = 0; Flags_Enable = 0; link_en = 0; end // Jump
 			 S8: begin PC_enable = 0; R_enable = 0; IR_enable = 0; ALU_Bus_enable = 1; reg_read = 0; WrtBrm_en = 0; Flags_Enable = 0; link_en = 0; end // Branch
 			 S9: begin PC_enable = 0; R_enable = 1; IR_enable = 0; ALU_Bus_enable = 0; reg_read = 1; WrtBrm_en = 0; Flags_Enable = 0; link_en = 1; end // Jump and Load
 		endcase

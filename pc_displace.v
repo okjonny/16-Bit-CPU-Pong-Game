@@ -9,7 +9,7 @@ module pc_displace(pc_in, op, flags, imm_in, link_out, dis_out, condition);
      output reg [15:0] dis_out, link_out;
      
      
-     reg type;
+     reg [1:0] type;
      
      // Flags[0] - Carry-bit
     // Flags[1] - Low flag: 1 if Rdest operand < Rsrc as UNSIGNED numbers
@@ -20,17 +20,18 @@ module pc_displace(pc_in, op, flags, imm_in, link_out, dis_out, condition);
      
   
      
-     always@(imm_in, op, condition, flags) begin
+     always@(imm_in, pc_in, op, condition, flags) begin
 	  
 	       //1100 -> branch (type = 1)  0100-> jump (type = 0)
      if(op[7:4] == 4'b1100)
-        type = 1;
+        type = 2'b01;
 		else if(op[7:4] == 4'b0100)
-        type = 0;
+        type = 2'b00;
 		else
-			dis_out = pc_in + 1;
-            //checks if jump
-      if(type == 0) begin
+		  type = 2'b10;
+
+       //checks if jump
+      if(type == 2'b00) begin
 			if(op[3:0] == 4'b1000) begin
 					link_out = pc_in + 1;
 					dis_out = imm_in;
@@ -170,7 +171,7 @@ module pc_displace(pc_in, op, flags, imm_in, link_out, dis_out, condition);
 				end
 					
 					//if branch
-            else if(type == 1) begin
+            else if(type == 2'b01) begin
                 case(condition[3:0])
 					 
 							// Flags[0] - C: Carry-bit
@@ -303,5 +304,7 @@ module pc_displace(pc_in, op, flags, imm_in, link_out, dis_out, condition);
 									  end
 						 endcase
 					 end
+					else if (type == 2'b10)
+						dis_out = pc_in + 1;
 		end
 endmodule 
