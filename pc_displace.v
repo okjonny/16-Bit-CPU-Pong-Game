@@ -306,5 +306,7 @@ module pc_displace(pc_in, op, flags, imm_in, link_out, dis_out, condition);
 					 end
 					else if (type == 2'b10)
 						dis_out = pc_in + 1;
+					else
+					dis_out = 16'b0;
 		end
 endmodule 

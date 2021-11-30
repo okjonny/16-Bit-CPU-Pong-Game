@@ -1,4 +1,4 @@
-module decoder(instruction_in, instruction_out, R_dest, R_src, immediate, RI_out, instr_type, cond_type, is_load);
+module decoder(instruction_in, instruction_out, R_dest, R_src, immediate, RI_out, instr_type, is_load);
 
 input [15:0] instruction_in;
 
@@ -21,8 +21,8 @@ reg [7:0] ipad;
 output reg RI_out; //0 is register, 1 is immediate for RI_out
 
 //00 is R-Type, 01 is STORE, 10 is LOAD
-output reg [2:0] instr_type, cond_type;
-output reg is_load = 0;
+output reg [2:0] instr_type;
+output reg is_load;
 
 // Parameter Defintions:
 parameter ADD = 	8'b00000101;

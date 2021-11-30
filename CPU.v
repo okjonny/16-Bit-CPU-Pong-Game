@@ -1,7 +1,7 @@
 module CPU(clk, reset, Flag_Reg_Output, ALU_Out_Bus); 
 wire [2:0] instr_type;
 wire [3:0] A_Mux_input, B_Mux_input;
-wire[3:0] Reg_Enable, cond_type;
+wire[3:0] Reg_Enable;
 wire [4:0] Flags;
 input clk,reset;
 wire [15:0] Immediate, instr_out, data_a, data_b, addr_a, addr_b, q_a, q_b, pc_out, load_store_wire, memory_link_wire, link;
@@ -33,7 +33,7 @@ program_counter PC(.clk(clk), .reset(reset),.pc_in(displacement),.pc_enable(PC_e
 instruction_reg Instruction_Register(.d_enable(IR_enable), .clk(clk), .instr_in(q_a), .instr_out(instr_out));
 
 //Decoder
-decoder Dec(.instruction_in(instr_out), .instruction_out(OP), .R_dest(B_Mux_input), .R_src(A_Mux_input), .immediate(Immediate), .RI_out(r_i_switch), .instr_type(instr_type), .cond_type(cond_type), .is_load(is_load));
+decoder Dec(.instruction_in(instr_out), .instruction_out(OP), .R_dest(B_Mux_input), .R_src(A_Mux_input), .immediate(Immediate), .RI_out(r_i_switch), .instr_type(instr_type), .is_load(is_load));
 
 // Reads in a 4 bit reg_enable and turns it to 16 bit reg_enable.
 Decoder_4to16 Decode_Reg_Enable(.Decode_In(B_Mux_input), .Decode_Out(Reg_Enable_16), .write_enable(R_enable));	 
