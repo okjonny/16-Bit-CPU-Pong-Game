@@ -2,7 +2,7 @@
 module horizontal_vga_counter (
     input clk_div,
     output reg [15:0] horizontal_count, 
-    output reg enable_vertical_count = 0
+    output reg enable_vertical_count
 );
 
 always @(posedge clk_div) begin
@@ -11,7 +11,7 @@ always @(posedge clk_div) begin
         enable_vertical_count <= 0;
 	 end
     else begin
-        horizontal_count <= 0;
+        horizontal_count <= 0;	
         enable_vertical_count <= 1;
     end
 end
