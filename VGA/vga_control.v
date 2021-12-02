@@ -1,4 +1,3 @@
-`timescale 1 ns/1 ps
 module vga_control (
     input clk,
     output vertical_sync,
@@ -13,9 +12,9 @@ wire enable_vertical_count;
 wire [15:0] vertical_count;
 wire [15:0] horizontal_count;
 
-reg [3:0] r_red = 0;
-reg [3:0] r_blue = 0;
-reg [3:0] r_green = 0;
+reg [3:0] r_red = 4'b0;
+reg [3:0] r_blue = 4'b0;
+reg [3:0] r_green = 4'b0;
 
 clock_divider clock_25_d(.clk(clk), .div_clk(clk_div_25));
 horizontal_vga_counter h_count(.clk_div(clk_div_25), .horizontal_count(horizontal_count), .enable_vertical_count(enable_vertical_count));
@@ -208,9 +207,9 @@ assign vertical_sync = (vertical_count < 2) ? 1'h1 : 1'h0;
 	// end pattern generate
 
 // Update RGB Values 
-assign r = (horizontal_count < 784 && horizontal_count > 143 && vertical_count < 515 && vertical_count > 34) ? r_red : 4'h0;
-assign g = (horizontal_count < 784 && horizontal_count > 143 && vertical_count < 515 && vertical_count > 34) ? r_blue : 4'h0;
-assign b = (horizontal_count < 784 && horizontal_count > 143 && vertical_count < 515 && vertical_count > 34) ? r_green : 4'h0;
+assign r = (horizontal_count < 784 && horizontal_count > 144 && vertical_count < 515 && vertical_count > 35) ? r_red : 4'h0;
+assign g = (horizontal_count < 784 && horizontal_count > 144 && vertical_count < 515 && vertical_count > 35) ? r_green : 4'h0;
+assign b = (horizontal_count < 784 && horizontal_count > 144 && vertical_count < 515 && vertical_count > 35) ? r_blue: 4'h0;
 
 
 endmodule //vga_control
