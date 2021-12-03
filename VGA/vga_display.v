@@ -253,9 +253,9 @@ end
 	// end pattern generate
 
 // Update RGB Values 
-assign r = (hcount > H_SYNC + H_BACK_PORCH && hcount < (H_SYNC + H_BACK_PORCH + H_DISPLAY_INT) && vcount > V_SYNC + V_BACK_PORCH && vcount < (V_SYNC + V_BACK_PORCH + V_DISPLAY_INT)) ? r_red : 4'h0;
-assign g = (hcount > H_SYNC + H_BACK_PORCH && hcount < (H_SYNC + H_BACK_PORCH + H_DISPLAY_INT) && vcount > V_SYNC + V_BACK_PORCH && vcount < (V_SYNC + V_BACK_PORCH + V_DISPLAY_INT)) ? r_green : 4'h0;
-assign b = (hcount > H_SYNC + H_BACK_PORCH && hcount < (H_SYNC + H_BACK_PORCH + H_DISPLAY_INT) && vcount > V_SYNC + V_BACK_PORCH && vcount < (V_SYNC + V_BACK_PORCH + V_DISPLAY_INT)) ? r_blue: 4'h0;
+assign r = ((hcount > H_SYNC + H_BACK_PORCH + H_FRONT_PORCH)  && (vcount > V_SYNC + V_BACK_PORCH + V_FRONT_PORCH)) ? r_red : 4'h0;
+assign g = ((hcount > H_SYNC + H_BACK_PORCH + H_FRONT_PORCH)  && (vcount > V_SYNC + V_BACK_PORCH + V_FRONT_PORCH)) ? r_green : 4'h0;
+assign b = ((hcount > H_SYNC + H_BACK_PORCH + H_FRONT_PORCH)  && (vcount > V_SYNC + V_BACK_PORCH + V_FRONT_PORCH)) ? r_blue: 4'h0;
 
 
 
