@@ -2,6 +2,7 @@ module vga_control (
     input clk,
     output vertical_sync,
     output horizontal_sync,
+    output reg vga_blank_n,
     output [3:0] r,
     output [3:0] g,
     output [3:0] b
@@ -22,7 +23,7 @@ vertical_vga_counter v_count(.clk_div(clk_div_25), .enable_vertical_count(enable
 
 //outputs
 assign horizontal_sync = (horizontal_count < 96) ? 1'h1 : 1'h0;
-assign vertical_sync = (vertical_count < 2) ? 1'h1 : 1'h0;
+assign vertical_sync = (vertical_count < 2)      ? 1'h1 : 1'h0;
 
 // THIS IS NOT MY CODE!!!!! USESD FOR TESTING PURPROSES
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -205,6 +206,17 @@ assign vertical_sync = (vertical_count < 2) ? 1'h1 : 1'h0;
 		end  // always
 						
 	// end pattern generate
+
+    always @(horizontal_count, vertical_count) begin
+    if ((horizontal_count >= 96 && horizontal_count <= 144) &&
+         (horizontal_count>= 784 && horizontal_count <= 799) &&
+         (vertical_count >= 2 && vertical_count <= 35))&&
+         (vertical_count >= 515 && vertical_count <= 524)
+         vga_blank_n = 1'b1;
+     
+     else 
+        vga_blank_n = 1'b0;
+end
 
 // Update RGB Values 
 assign r = (horizontal_count < 784 && horizontal_count > 144 && vertical_count < 515 && vertical_count > 35) ? r_red : 4'h0;
