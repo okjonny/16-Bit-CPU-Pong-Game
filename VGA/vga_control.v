@@ -208,14 +208,14 @@ assign vertical_sync = (vertical_count < 2)      ? 1'h1 : 1'h0;
 	// end pattern generate
 
     always @(horizontal_count, vertical_count) begin
-    if ((horizontal_count >= 96 && horizontal_count <= 144) &&
-         (horizontal_count>= 784 && horizontal_count <= 799) &&
-         (vertical_count >= 2 && vertical_count <= 35))&&
-         (vertical_count >= 515 && vertical_count <= 524)
-         vga_blank_n = 1'b1;
+    if ((horizontal_count >= 96 && horizontal_count <= 144) ||
+         (horizontal_count>= 784 && horizontal_count <= 799) ||
+         (vertical_count >= 2 && vertical_count <= 35) ||
+         (vertical_count >= 515 && vertical_count <= 524))
+         vga_blank_n = 1'b0;
      
      else 
-        vga_blank_n = 1'b0;
+        vga_blank_n = 1'b1; // bright
 end
 
 // Update RGB Values 
