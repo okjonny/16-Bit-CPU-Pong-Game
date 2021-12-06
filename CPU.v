@@ -1,15 +1,16 @@
-module CPU(clk, reset, Flag_Reg_Output, ALU_Out_Bus); 
+module CPU(clk, reset, Flag_Reg_Output, ALU_Out_Bus, GIO_pins); 
 wire [2:0] instr_type;
 wire [3:0] A_Mux_input, B_Mux_input;
 wire[3:0] Reg_Enable;
 wire [4:0] Flags;
 input clk,reset;
-wire [15:0] Immediate, instr_out, data_a, data_b, addr_a, addr_b, q_a, q_b, pc_out, load_store_wire, memory_link_wire, link;
+input [7:0] GIO_pins;
+wire [15:0] Immediate, instr_out, data_a, addr_a, addr_b, q_a, q_b, pc_out, load_store_wire, memory_link_wire, link;
 wire ALU_Bus_enable, Flags_Enable, cin, PC_enable, PC_jump_enable, IR_enable, r_i_switch, R_enable, we_a, we_b, ALU_Bus_control, reg_read, WrtBrm_en, is_load, memory_link_control;
 wire [7:0] OP, muxes;
 wire[15:0] r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
 wire [15:0] A_mux, B_mux, ALU_Bus, Imm_out;
-wire [15:0] regs_en, imm, displacement;
+wire [15:0] Nes_input,Nes_addr, imm, displacement;
 wire [15:0] Reg_Enable_16;
 output [4:0] Flag_Reg_Output;
 output wire [15:0] ALU_Out_Bus;
@@ -59,11 +60,13 @@ Five_Bit_Register Flag_reg(.D_in(Flags), .wEnable(Flags_Enable), .reset(reset), 
 //MUX to switch between BRAM and Rlink
 MUX_2to1 PC_Link_MUX(.data_inA(q_a), .data_inB(link), .control(memory_link_control), .out(memory_link_wire));
 
-
 //If control == 1, ALU Bus is enabled, else BRAM
 MUX_2to1 ALU_Bus_MUX(.data_inA(memory_link_wire), .data_inB(ALU_Out_Bus), .control(ALU_Bus_control), .out(ALU_Bus));
 
+// This reading in 8-bit controls and turns it into 16-bit control.
+nes_input nes_input(.control_in(GIO_pins), .control_out(Nes_input), .nes_input_addr(Nes_addr));
+
 //B Ram
-bram storage(.data_a(A_mux), .data_b(data_b), .addr_a(addr_a), .addr_b(addr_b), .we_a(WrtBrm_en), .we_b(we_b), .clk(clk), .q_a(q_a), .q_b(q_b));
+bram storage(.data_a(A_mux), .data_b(Nes_input), .addr_a(addr_a), .addr_b(Nes_addr), .we_a(WrtBrm_en), .we_b(we_b), .clk(clk), .q_a(q_a), .q_b(q_b));
 
 endmodule 
