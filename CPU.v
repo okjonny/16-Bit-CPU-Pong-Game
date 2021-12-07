@@ -1,19 +1,20 @@
-module CPU(clk, reset, Flag_Reg_Output, ALU_Out_Bus, GIO_pins, q_b); 
+module CPU(clk, reset, Flag_Reg_Output, ALU_Out_Bus, GIO_pins, r15); 
 wire [2:0] instr_type;
 wire [3:0] A_Mux_input, B_Mux_input;
 wire[3:0] Reg_Enable;
 wire [4:0] Flags;
 input clk,reset;
 input [7:0] GIO_pins;
-wire [15:0] Immediate, instr_out, data_a, addr_a, addr_b, q_a, pc_out, load_store_wire, memory_link_wire, link;
+wire [15:0] Immediate, instr_out, data_a, data_b, addr_a, addr_b, q_a, q_b, pc_out, load_store_wire, memory_link_wire, link;
 wire ALU_Bus_enable, Flags_Enable, cin, PC_enable, PC_jump_enable, IR_enable, r_i_switch, R_enable, we_a, we_b, ALU_Bus_control, reg_read, WrtBrm_en, is_load, memory_link_control, B_write_en;
 wire [7:0] OP, muxes;
-wire[15:0] r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
+wire[15:0] r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14;
+output wire [15:0] r15; 
 wire [15:0] A_mux, B_mux, ALU_Bus, Imm_out;
 wire [15:0] Nes_input,Nes_addr, imm, displacement;
 wire [15:0] Reg_Enable_16;
 output [4:0] Flag_Reg_Output;
-output wire [15:0] ALU_Out_Bus, q_b;
+output wire [15:0] ALU_Out_Bus;
 
 //FSM
 CPU_FSM FSM(.clk(clk), .reset(reset), .PC_enable(PC_enable), .IR_enable(IR_enable), .R_enable(R_enable) , .ALU_Bus_enable(ALU_Bus_control), .instr_type(instr_type), .reg_read(reg_read), .WrtBrm_en(WrtBrm_en), .Flags_Enable(Flags_Enable), .link_en(memory_link_control));
@@ -40,7 +41,7 @@ decoder Dec(.instruction_in(instr_out), .instruction_out(OP), .R_dest(B_Mux_inpu
 Decoder_4to16 Decode_Reg_Enable(.Decode_In(B_Mux_input), .Decode_Out(Reg_Enable_16), .write_enable(R_enable));	 
 
 // Stores all the registers and connects them to the ALU_Bus. 	 
-RegBank Bank(.ALUBus(ALU_Bus),.r0(r0),.r1(r1),.r2(r2),.r3(r3),.r4(r4),.r5(r5),.r6(r6),.r7(r7),.r8(r8),.r9(r9),.r10(r10),.r11(r11),.r12(r12),.r13(r13),.r14(r14),.r15(r15),.regEnable(Reg_Enable_16),.clk(clk),.reset(reset));
+RegBank Bank(.ALUBus(ALU_Bus), .nes_input(Nes_input),.r0(r0),.r1(r1),.r2(r2),.r3(r3),.r4(r4),.r5(r5),.r6(r6),.r7(r7),.r8(r8),.r9(r9),.r10(r10),.r11(r11),.r12(r12),.r13(r13),.r14(r14),.r15(r15),.regEnable(Reg_Enable_16),.clk(clk),.reset(reset));
 
 // This mux takes in from the register bank.
 MUX_16to1 A(.reg_select(A_Mux_input),.out(A_mux), .r0(r0),.r1(r1),.r2(r2),.r3(r3),.r4(r4),.r5(r5),.r6(r6),.r7(r7),.r8(r8),.r9(r9),.r10(r10),.r11(r11),.r12(r12),.r13(r13),.r14(r14),.r15(r15));
@@ -64,9 +65,9 @@ MUX_2to1 PC_Link_MUX(.data_inA(q_a), .data_inB(link), .control(memory_link_contr
 MUX_2to1 ALU_Bus_MUX(.data_inA(memory_link_wire), .data_inB(ALU_Out_Bus), .control(ALU_Bus_control), .out(ALU_Bus));
 
 // This reading in 8-bit controls and turns it into 16-bit control.
-nes_input nes_input(.control_in(GIO_pins), .control_out(Nes_input), .nes_input_addr(Nes_addr), .write_enable(B_write_en));
+nes_input nes_input(.control_in(GIO_pins), .control_out(Nes_input));
 
 //B Ram
-bram storage(.data_a(A_mux), .data_b(Nes_input), .addr_a(addr_a), .addr_b(Nes_addr), .we_a(WrtBrm_en), .we_b(B_write_en), .clk(clk), .q_a(q_a), .q_b(q_b));
+bram storage(.data_a(A_mux), .data_b(data_b), .addr_a(addr_a), .addr_b(addr_b), .we_a(WrtBrm_en), .we_b(we_b), .clk(clk), .q_a(q_a), .q_b(q_b));
 
 endmodule 

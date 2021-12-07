@@ -30,10 +30,11 @@ endmodule
 
 // Structural Implementation of RegBank
 /********/
-module RegBank(ALUBus, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, regEnable, clk, reset);
+module RegBank(ALUBus, nes_input, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, regEnable, clk, reset);
 	input clk, reset;
 	input [15:0] ALUBus;
 	input [15:0] regEnable;
+	input [15:0] nes_input;
 	output [15:0] r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15;
 
 Register Inst0(
@@ -56,5 +57,5 @@ Register Inst11(ALUBus, regEnable[11], reset, clk, r11);
 Register Inst12(ALUBus, regEnable[12], reset, clk, r12);
 Register Inst13(ALUBus, regEnable[13], reset, clk, r13);
 Register Inst14(ALUBus, regEnable[14], reset, clk, r14);
-Register Inst15(ALUBus, regEnable[15], reset, clk, r15);
+Register Inst15(nes_input, 1'b1, reset, clk, r15);
 endmodule 
