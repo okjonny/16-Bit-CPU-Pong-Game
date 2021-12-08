@@ -1,16 +1,17 @@
 module vga_control (
 	input	clk, rst,
+	input [15:0] mem_in,
 	output hsync, vsync,
 	output reg vga_blank_n, vga_clk,
 	output reg [15:0] hcount, vcount,
 	
-   input [3:0] r_in;
-   input [3:0] g_in;
-   input [3:0] b_in;
+   input [3:0] r_in,
+   input [3:0] g_in,
+   input [3:0] b_in,
 	
-	output [3:0] r_out;
-   output [3:0] g_out;
-   output [3:0] b_out;
+	output [3:0] r_out,
+   output [3:0] g_out,
+   output [3:0] b_out
 );
 
 reg count;
