@@ -11,10 +11,10 @@ reg mem_addy = 16'b0;
 CPU uut(.clk(clk), .reset(reset), .Flag_Reg_Output(flags), .ALU_Out_Bus(ALU_output), .GIO_pins(GIO_pins), .addr_b(mem_addy), .q_b(mem_output), .r15(r15_output), .r8(r8_output));
 
 
-hexTo7Seg first(.x(r8_output[15:12]),.z(Hex_output_1));
-hexTo7Seg second(.x(r8_output[11:8]),.z(Hex_output_2));
-hexTo7Seg third(.x(r8_output[7:4]),.z(Hex_output_3));
-hexTo7Seg fourth(.x(r8_output[3:0]),.z(Hex_output_4));
+hexTo7Seg first(.x(ALU_output[15:12]),.z(Hex_output_1));
+hexTo7Seg second(.x(ALU_output[11:8]),.z(Hex_output_2));
+hexTo7Seg third(.x(ALU_output[7:4]),.z(Hex_output_3));
+hexTo7Seg fourth(.x(ALU_output[3:0]),.z(Hex_output_4));
 
 hexTo7Seg fith(.x(r15_output[3:0]),.z(Hex_output_5));
 hexTo7Seg sixth(.x(r15_output[7:4]),.z(Hex_output_6));
