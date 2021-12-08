@@ -73,7 +73,7 @@ module vga_display (
     always @(hcount, vcount) begin
                 red = 8'd12;
                 green = 8'd10;
-                blue = 8'd181;
+                blue = 8'd181;	 
         end
     
     always @(hcount,vcount) begin
