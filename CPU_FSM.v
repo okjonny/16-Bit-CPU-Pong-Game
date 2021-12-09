@@ -56,7 +56,7 @@ module CPU_FSM
 	begin
 		case (state)
 			 S0: begin PC_enable = 0; R_enable = 0; IR_enable = 1; ALU_Bus_enable = 1; reg_read = 0; WrtBrm_en = 0; Flags_Enable = 0; link_en = 0; end //Fetch   alu will write back to reg and not bram
-			 S1: begin PC_enable = instr_type != 3'b101; R_enable = 0; IR_enable = 0; ALU_Bus_enable = 1; reg_read = 0; WrtBrm_en = 0; Flags_Enable = 0; link_en = 1; end //Decode  alu will write back to reg and not bram
+			 S1: begin PC_enable = instr_type != 3'b101; R_enable = 0; IR_enable = 0; ALU_Bus_enable = 1; reg_read = 0; WrtBrm_en = 0; Flags_Enable = 0; link_en = 0; end //Decode  alu will write back to reg and not bram
 			 S2: begin PC_enable = 0; R_enable = 1; IR_enable = 0; ALU_Bus_enable = 1; reg_read = 0; WrtBrm_en = 0; Flags_Enable = 1; link_en = 0; end //Execute/Write-Back alu will write back to reg and not bram
 			 S3: begin PC_enable = 0; R_enable = 0; IR_enable = 0; ALU_Bus_enable = 0; reg_read = 1; WrtBrm_en = 1; Flags_Enable = 0; link_en = 0; end //STORE
 			 S4: begin PC_enable = 0; R_enable = 0; IR_enable = 0; ALU_Bus_enable = 0; reg_read = 1; WrtBrm_en = 0; Flags_Enable = 0; link_en = 0; end //LOAD

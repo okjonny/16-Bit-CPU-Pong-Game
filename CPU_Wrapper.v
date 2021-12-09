@@ -8,7 +8,15 @@ output [6:0] Hex_output_1, Hex_output_2, Hex_output_3, Hex_output_4, Hex_output_
 reg mem_addy = 16'b0; 
 
 
-CPU uut(.clk(clk), .reset(reset), .Flag_Reg_Output(flags), .ALU_Out_Bus(ALU_output), .GIO_pins(GIO_pins), .addr_b(mem_addy), .q_b(mem_output), .r15(r15_output), .r8(r8_output));
+CPU uut(.clk(clk), 
+		  .reset(reset),
+		  .Flag_Reg_Output(flags),
+		  .ALU_Out_Bus(ALU_output),
+		  .GIO_pins(GIO_pins),
+		  .addr_b(mem_addy),
+		  .q_b(mem_output),
+		  .r15(r15_output),
+		  .r8(r8_output));
 
 
 hexTo7Seg first(.x(ALU_output[15:12]),.z(Hex_output_1));

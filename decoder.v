@@ -59,6 +59,11 @@ always @(instruction_in, op, R_src, R_dest)
 				R_src = instruction_in[11:8];
 				R_dest = instruction_in[3:0];
 			end
+//		if(op[7:4] == ADDI[7:4]) 
+//			begin
+//				R_src = instruction_in[11:8];
+//				R_dest = instruction_in[11:8];
+//			end
 		else
 			begin
 				R_src = instruction_in[3:0]; // rtarget for jump
@@ -95,6 +100,7 @@ always @(instruction_in, op, R_src, R_dest)
 						ipad = 8'b00000000;
 					
 					immediate = {ipad, instruction_in[7:4], R_src};
+					R_src = instruction_in[11:8];
 					RI_out = 1;
 					instr_type = 3'b000;
 					is_load = 0;
@@ -148,6 +154,7 @@ always @(instruction_in, op, R_src, R_dest)
 					ipad = 8'b00000000;
 					immediate = {ipad, instruction_in[7:4], R_src};
 					RI_out = 1;
+					R_src = instruction_in[11:8];
 					instr_type = 3'b000;
 				end
 			
@@ -176,6 +183,18 @@ always @(instruction_in, op, R_src, R_dest)
 					instruction_out = MOV;
 					ipad = 8'b00000000;
 					immediate = {ipad, instruction_in[7:4], R_src};
+					RI_out = 1;
+					instr_type = 3'b000;
+					is_load = 0;
+				end
+				
+			LSHI:
+				begin
+					instruction_out = LSH;
+					R_src = instruction_in[11:8];
+					R_dest = instruction_in[3:0];
+					ipad = 8'b00000000;
+					immediate = {ipad, 4'b0000, instruction_in[3:0]};
 					RI_out = 1;
 					instr_type = 3'b000;
 					is_load = 0;
