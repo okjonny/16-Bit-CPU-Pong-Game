@@ -192,7 +192,6 @@ always @(instruction_in, op, R_src, R_dest)
 				begin
 					instruction_out = LSH;
 					R_src = instruction_in[11:8];
-					R_dest = instruction_in[3:0];
 					ipad = 8'b00000000;
 					immediate = {ipad, 4'b0000, instruction_in[3:0]};
 					RI_out = 1;
