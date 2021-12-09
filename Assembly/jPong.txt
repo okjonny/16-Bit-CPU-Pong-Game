@@ -1,0 +1,156 @@
+ANDI $0 %r0                 # %r0 = 0; //Goto address.
+
+ANDI $0 %r1                 # %r1 = 0; //Return address.
+
+                            # |--640----------------------------|
+                            # +---------------------------------+ -
+ANDI $0 %r2                 # |    start pos: 239               | |
+ADDI $127 %r2               # |             <-%r2->             | |
+ADDI $112 %r2               # |                |<---160--->|    | |
+                            # +---------------------------------+ -
+                            # %r2 = 239; //Paddle horizontal scanline position.
+
+ANDI $0  %r4                # %r4
+ADDI $30 %r4                # Address of 960 used for memory
+LSHI $5  %r4                
+
+STOR %r2 %r4                # Store starting position:239 into m[960] 
+
+ANDI $0 %r3                 # %r3 = 0; //Comparison value.
+
+ANDI $0 %r4                 # %r4 = 0; //VGA address.
+
+ANDI $0 %r5                 # %r5 = 0;
+
+ANDI $0 %r6                 # %r6 = 0;
+
+ANDI $0 %r7                 # %r7 = 0;
+
+ANDI $0 %r8                 # %r8 = 0;
+
+ANDI $0 %r9                 # %r9 = 0;
+
+ANDI $0 %r10                # %r10 = 0;
+
+ANDI $0 %r11                # %r11 = 0;
+
+ANDI $0 %r12                # %r12 = 0;
+
+ANDI $0 %r13                # %r13 = 0;
+
+ANDI $0 %r14                # %r14 = 0; //Debug position.
+
+                            # $r15 = buttonState;
+
+
+
+
+.routineLoop                # while(1) {
+
+    ANDI $0 %r14            # debugPosition = 1;
+    ADDI $1 %r14            #
+
+    JPT .gameLogic %r0      # gameLogic();
+    JPT .retAddr1 %r1       #
+    JUC %r0                 #
+.retAddr1                   #
+
+    ANDI $0 %r14            # debugPosition = 7;
+    ADDI $7 %r14            #
+
+    JPT .routineLoop %r0    # gameLogic();
+    JPT .retAddr2 %r1       #
+    JUC %r0                 #
+.retAddr2               #
+
+    JPT .routineLoop %r0    # }
+    JUC %r0                 #
+
+
+
+
+.gameLogic                  # gameLogic() {
+
+    ANDI $0 %r14            # debugPosition = 2;
+    ADDI $2 %r14            #
+
+                            #//Move paddle if correct button being pressed down.
+
+    ANDI $0 %r3             # if(buttonDown == leftButton) {
+    ADDI $127 %r3           #
+    ADDI $64 %r3            #
+    CMP %r15 %r3            #
+    JPT .notLeft %r0        #
+    JNE %r0                 #
+
+
+    ANDI $0 %r14            # debugPosition = 10;
+    ADDI $10 %r14            #
+
+    ANDI $0 %r14            # debugPosition = 3;
+    ADDI $3 %r14            #
+    
+    SUBI $1 %r2             # paddlePosition--; //Adjust paddle speed here.
+
+    JPT .notRight %r0       # }
+    JUC %r0                 #
+.notLeft                    #
+
+
+    ANDI $0 %r3             # else if(buttonDown == rightButton) {
+    ADDI $127 %r3           #
+    CMP %r15 %r3            #
+    JPT .notRight %r0       #
+    JNE %r0                 #
+
+    ANDI $0 %r14            # debugPosition = 4;
+    ADDI $4 %r14            #
+    
+    ADDI $1 %r2             # paddlePosition++; //Adjust paddle speed here.
+
+.notRight                   # }
+
+                            #//Correct paddle off screen to the left.
+
+    ANDI $0 %r3             # if(paddlePosition < 0) {
+    CMP %r3 %r2             #
+    JPT .notOffLeft %r0     #
+    JGE %r0     #
+
+    ANDI $0 %r14            # debugPosition = 5;
+    ADDI $5 %r14            #
+
+    ANDI $0 %r2             # paddlePosition = 0;
+    
+.notOffLeft                 # }
+
+    ANDI $0 %r3             # else if (paddlePosition > 479) {
+    ADDI $127 %r3           #
+    ADDI $127 %r3           #
+    ADDI $127 %r3           #
+    ADDI $89 %r3            #
+    CMP %r2 %r3             #
+    JPT .notOffRight %r0    #
+    JLE %r0                 #
+
+    ANDI $0 %r14            # debugPosition = 6;
+    ADDI $6 %r14            #
+
+    ANDI $0 %r2             # paddlePosition = 479;
+    ADD %r2 %r3             #
+
+.notOffRight                # }
+
+    STOR %r2 %r4            # store m[960]
+
+JUC %r1                     # }
+
+
+
+
+
+.gameDraw                   # gameDraw() {
+
+                            #// Add code to draw paddle with VGA here.
+
+JUC %r1                     # }

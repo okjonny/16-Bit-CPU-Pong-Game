@@ -1,0 +1,64 @@
+ANDI $0 %r0
+JPT .main %r0
+JUC %r0
+
+.main
+    ANDI $0   %r1         # %r1
+    ADDI $100 %r1         # Sets the value for a LEFT KEY PRESS: 191
+    ANDI $0   %r2         # %r2
+    ADDI $91  %r2         # Sets the value for a LEFT KEY PRESS: 191
+    ADD %r1 %r2           # Add registers for LEFT KEY PRESS: 191
+
+    ANDI $0  %r2          # %r2
+    ADDI $30 %r2          # Address of 960 used for memory
+    LSHI $5  %r2          #
+
+    # PROCESS INPUTS SET THE X-Value of paddle
+    JPT .processInput %r6
+    JUC %r6
+
+    #  
+    JPT .refresh %r6
+    JUC %r6
+
+    JUC %r0
+
+.processInput
+    JPT .ifRight %r6      # Sets memory value to %r6
+
+    ANDI $0   %r1         # %r1
+    ADDI $100 %r1         # Sets the value for a LEFT KEY PRESS: 191
+    ANDI $0   %r2         # %r2
+    ADDI $91  %r2         # Sets the value for a LEFT KEY PRESS: 191
+    ADD %r1 %r2           # Add registers for LEFT KEY PRESS: 191
+
+    ANDI $0  %r2          # %r2
+    ADDI $30 %r2          # Address of 960 used for memory
+    LSHI $5  %r2          #
+
+    ANDI $0  %r8          # %r8
+    LOAD %r8 %r2          # Load %r2 m[960] to %r8
+
+    JPT .movePaddleLeft %r5
+    CMP  %r1 %r15         # Have the register, check if LEFT 
+    JNE  %r6              # Go to .ifRight if it isn't LEFT
+    CMPI $0 %r8           # Only Decrement to LEFT if 0 < pos
+    JLT   %r5              # Update left if true
+    JUC  %r0              # Return to main
+
+.movePaddleLeft
+    SUBI $1  %r8          # Move paddle 
+    STOR %r8 %r2          # Store value of %r8 back to m[960]
+    JUC  %r0              # Return to main
+
+.ifRight
+    ANDI $0   %r1        # Set %r1 to 127
+    ADDI $127 %r1
+
+    CMP  %r1 %r15        # Have the register, check if RIGHT 
+    JNE  %r0             # Not right, return to main
+    ADDI $1 %r8          # Move paddle to RIGHT
+    STOR %r8 %r2         # Store value of %r8 back to m[960]
+    JUC  %r0             # Return to main
+
+.refresh
