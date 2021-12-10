@@ -1,0 +1,4 @@
+JPT .main %r0
+JUC %r0
+.main
+    ADDI $100 %r1         # Sets the value for a LEFT KEY PRESS: 191
