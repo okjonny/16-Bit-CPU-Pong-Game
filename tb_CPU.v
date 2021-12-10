@@ -30,5 +30,6 @@ initial begin
 		clk = 0; #20;
 		
 		GIO_pins = 8'b10111111;
+
 end
 endmodule

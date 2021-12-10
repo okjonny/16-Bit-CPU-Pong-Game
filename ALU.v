@@ -11,6 +11,7 @@ input [7:0] Op;	// Op-code selection
 output reg [4:0] Flags;
 
 output reg [15:0] Output;
+reg [15:0] cmp_store;
 
 // Parameter Defintions:
 parameter ADD = 	8'b00000101;
@@ -30,55 +31,57 @@ always @(A, B, Op)
 		ADD: 
 		begin		
 			{Flags[0], Output} = A + B; //+ Flags[0]; // Flags[0] - Carry-bit, Can't add Flag[0] ASK SAM
-			Flags[1] = 1'bx;
-			Flags[2] = 1'bx;
+			Flags[1] = 1'b0;
+			Flags[2] = 1'b0;
 			Flags[3] = Output == 0;
 			Flags[4] = Output[15];
 		end
 		SUB:
 		begin
 			//Rdest = Rdest - Rsrc
-			Output = B - A; //+ Flags[0]; // Flags[0] - Carry-bit, Can't add Flag[0] ASK SAM
-			Flags[0] = 1'bx;
-			Flags[1] = 1'bx;
-			Flags[2] = 1'bx;
+			Output = A - B; //+ Flags[0]; // Flags[0] - Carry-bit, Can't add Flag[0] ASK SAM
+			Flags[0] = 1'b0;
+			Flags[1] = 1'b0;
+			Flags[2] = 1'b0;
 			Flags[3] = Output == 0;
 			Flags[4] = Output[15];
 		end
 		OR: 
 		begin
 			Output = A | B;
-			Flags[0] = 1'bx;
-			Flags[1] = 1'bx;
-			Flags[2] = 1'bx;
+			Flags[0] = 1'b0;
+			Flags[1] = 1'b0;
+			Flags[2] = 1'b0;
 			Flags[3] = Output == 0;
-			Flags[4] = 1'bx;
+			Flags[4] = 1'b0;
 		end
 		
 		AND:
 			begin
 				Output = A & B;
-				Flags[0] = 1'bx;
-				Flags[1] = 1'bx;
-				Flags[2] = 1'bx;
+				Flags[0] = 1'b0;
+				Flags[1] = 1'b0;
+				Flags[2] = 1'b0;
 				Flags[3] = Output == 0;
-				Flags[4] = 1'bx;
+				Flags[4] = 1'b0;
 			end
 			
 		XOR:
 			begin
 				Output = A ^ B;
-				Flags[0] = 1'bx;
-				Flags[1] = 1'bx;
-				Flags[2] = 1'bx;
+				Flags[0] = 1'b0;
+				Flags[1] = 1'b0;
+				Flags[2] = 1'b0;
 				Flags[3] = Output == 0;
-				Flags[4] = 1'bx;
+				Flags[4] = 1'b0;
 			end
 		CMP:
 		begin
-			//Add for checks
-			Output = A + B;
-			Flags[0] = 1'bx;
+//			//Add for flag checks
+			cmp_store = A + B;
+			Output = B;
+			
+			Flags[0] = 1'b0;
 			
 			// Flags[1] - Low flag: 1 if Rdest operand < Rsrc as UNSIGNED numbers
 			if(B < A)
@@ -87,8 +90,8 @@ always @(A, B, Op)
 				Flags[1] = 0;//1'bx for don't care
 				
 			// Flags[2] - Flag: F bit to signal arithmetic overflow
-			if((A[15] == 0 && B[15] == 0 && Output[15] == 1) ||
-				A[15] == 1 && B[15] == 1 && Output[15] == 0) //arithmetic overflow
+			if((A[15] == 0 && B[15] == 0 && cmp_store[15] == 1) ||
+				A[15] == 1 && B[15] == 1 && cmp_store[15] == 0) //arithmetic overflow
 				Flags[2] = 1;
 			else
 				Flags[2] = 0;
@@ -115,11 +118,11 @@ always @(A, B, Op)
 					Output = A << B;
 				
 				
-				Flags[0] = 1'bx;
-				Flags[1] = 1'bx;
-				Flags[2] = 1'bx;
+				Flags[0] = 1'b0;
+				Flags[1] = 1'b0;
+				Flags[2] = 1'b0;
 				Flags[3] = Output == 0;
-				Flags[4] = 1'bx;
+				Flags[4] = 1'b0;
 			end
 				
 		ASHU:
@@ -129,21 +132,21 @@ always @(A, B, Op)
 				else
 					Output = $signed(A) <<< B;
 				
-				Flags[0] = 1'bx;
-				Flags[1] = 1'bx;
-				Flags[2] = 1'bx;
+				Flags[0] = 1'b0;
+				Flags[1] = 1'b0;
+				Flags[2] = 1'b0;
 				Flags[3] = Output == 0;
-				Flags[4] = 1'bx;
+				Flags[4] = 1'b0;
 			end
 //			
 		default:
 			begin
 				Output = 16'b0;
-				Flags[0] = 1'bx;
-				Flags[1] = 1'bx;
-				Flags[2] = 1'bx;
-				Flags[3] = 1'bx;
-				Flags[4] = 1'bx;
+				Flags[0] = 1'b0;
+				Flags[1] = 1'b0;
+				Flags[2] = 1'b0;
+				Flags[3] = 1'b0;
+				Flags[4] = 1'b0;
 			end
 		endcase
 	end

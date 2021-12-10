@@ -128,7 +128,8 @@ always @(instruction_in, op, R_src, R_dest)
 					else
 						ipad = 8'b00000000;
 						
-					immediate = {ipad, ~instruction_in[7:4], ~R_src};
+					immediate = {ipad, instruction_in[7:4], R_src};
+					R_src = instruction_in[11:8];
 					RI_out = 1;
 					instr_type = 3'b000;
 					is_load = 0;
