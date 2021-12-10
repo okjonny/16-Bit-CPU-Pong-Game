@@ -1,4 +1,4 @@
-module CPU(clk, reset, Flag_Reg_Output, ALU_Out_Bus, GIO_pins, addr_b, q_b, r15, r14); 
+module CPU(clk, reset, Flag_Reg_Output, ALU_Out_Bus, GIO_pins, addr_b, q_b, r15, r2); 
 wire [2:0] instr_type;
 wire [3:0] A_Mux_input, B_Mux_input;
 wire[3:0] Reg_Enable;
@@ -9,8 +9,8 @@ input [15:0] addr_b;
 wire [15:0] Immediate, instr_out, data_a, data_b, addr_a, q_a, pc_out, load_store_wire, memory_link_wire, link;
 wire ALU_Bus_enable, Flags_Enable, cin, PC_enable, PC_jump_enable, IR_enable, r_i_switch, R_enable, we_a, we_b, ALU_Bus_control, reg_read, WrtBrm_en, is_load, memory_link_control, B_write_en;
 wire [7:0] OP, muxes;
-wire[15:0] r0,r1,r2,r8,r3,r4,r5,r6,r7,r9,r10,r11,r12,r13;
-output wire[15:0] r15, r14;
+wire[15:0] r0,r1,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14;
+output wire[15:0] r15, r2;
 wire [15:0] A_mux, B_mux, ALU_Bus, Imm_out;
 wire [15:0] Nes_input,Nes_addr, imm, displacement;
 wire [15:0] Reg_Enable_16;

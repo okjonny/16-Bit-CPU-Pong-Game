@@ -3,7 +3,8 @@ module vga_display (
     
     output reg [7:0] red, green, blue,
     output hsync, vsync,
-    output reg blankN, vgaClk
+    output reg blankN, 
+     output wire vgaClk
 );
 
     localparam H_SYNC                 = 10'd96;  // 3.8us  -- 25.175M * 3.8u  = 95.665
@@ -39,7 +40,7 @@ module vga_display (
         green = 8'b0;
         blue = 8'b0;
         blankN = 1'b0;
-        vgaClk = 1'b0;
+        //vgaClk = 1'b0;
         hcount = 10'b0;
         vcount = 10'b0;
     end
@@ -71,9 +72,18 @@ module vga_display (
     end
     
     always @(hcount, vcount) begin
+            localparam h_range_i = 400; 
+            localparam h_range_e = 450; 
+            if(vcount > 410 && vcount < 420 && hcount > h_range_i && hcount < h_range_e) begin 
+                   red = 8'd255;
+                green = 8'd255;
+                blue = 8'd255;
+                     end 
+                     else begin
                 red = 8'd12;
-                green = 8'd10;
-                blue = 8'd181;	 
+                green = 8'd1;
+                blue = 8'd181;
+                     end
         end
     
     always @(hcount,vcount) begin

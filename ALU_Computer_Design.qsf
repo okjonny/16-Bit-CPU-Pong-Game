@@ -39,10 +39,10 @@
 
 set_global_assignment -name DEVICE 5CSEMA5F31C6
 set_global_assignment -name FAMILY "Cyclone V"
-set_global_assignment -name TOP_LEVEL_ENTITY CPU
+set_global_assignment -name TOP_LEVEL_ENTITY CPU_Wrapper
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 20.1.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "16:04:14  SEPTEMBER 02, 2021"
-set_global_assignment -name LAST_QUARTUS_VERSION "18.0.0 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "21.1.0 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
@@ -60,20 +60,6 @@ set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -sectio
 set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH tb_CPU -section_id eda_simulation
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST ON -section_id eda_simulation
 set_location_assignment PIN_AF14 -to clk
-set_location_assignment PIN_H14 -to b[0]
-set_location_assignment PIN_F15 -to b[1]
-set_location_assignment PIN_G15 -to b[2]
-set_location_assignment PIN_J14 -to b[3]
-set_location_assignment PIN_G11 -to g[0]
-set_location_assignment PIN_G12 -to g[1]
-set_location_assignment PIN_F11 -to g[2]
-set_location_assignment PIN_E11 -to g[3]
-set_location_assignment PIN_F13 -to r[3]
-set_location_assignment PIN_E12 -to r[2]
-set_location_assignment PIN_D12 -to r[1]
-set_location_assignment PIN_C12 -to r[0]
-set_location_assignment PIN_F10 -to vga_blank_n
-set_location_assignment PIN_A11 -to vga_clk
 set_location_assignment PIN_D11 -to vsync
 set_location_assignment PIN_B11 -to hsync
 set_location_assignment PIN_AB17 -to GIO_pins[0]
@@ -136,9 +122,6 @@ set_global_assignment -name EDA_TEST_BENCH_NAME tb_CPU -section_id eda_simulatio
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_CPU
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_CPU -section_id tb_CPU
 set_global_assignment -name EDA_TEST_BENCH_FILE tb_CPU.v -section_id tb_CPU
-set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
-set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
-set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name VERILOG_FILE Five_Bit_Register.v
 set_global_assignment -name VERILOG_FILE ALU.v
 set_global_assignment -name VERILOG_FILE pc_displace.v
@@ -153,6 +136,34 @@ set_global_assignment -name VERILOG_FILE nes_input.v
 set_global_assignment -name VERILOG_FILE bram.v
 set_global_assignment -name VERILOG_FILE CPU_FSM.v
 set_global_assignment -name VERILOG_FILE CPU.v
-set_global_assignment -name VERILOG_FILE VGA/vga_display.v
 set_global_assignment -name VERILOG_FILE VGA/clkDivider.v
+set_location_assignment PIN_F10 -to blankN
+set_location_assignment PIN_B13 -to blue[0]
+set_location_assignment PIN_G13 -to blue[1]
+set_location_assignment PIN_H13 -to blue[2]
+set_location_assignment PIN_F14 -to blue[3]
+set_location_assignment PIN_H14 -to blue[4]
+set_location_assignment PIN_F15 -to blue[5]
+set_location_assignment PIN_G15 -to blue[6]
+set_location_assignment PIN_J14 -to blue[7]
+set_location_assignment PIN_J9 -to green[0]
+set_location_assignment PIN_J10 -to green[1]
+set_location_assignment PIN_H12 -to green[2]
+set_location_assignment PIN_G10 -to green[3]
+set_location_assignment PIN_G11 -to green[4]
+set_location_assignment PIN_G12 -to green[5]
+set_location_assignment PIN_F11 -to green[6]
+set_location_assignment PIN_E11 -to green[7]
+set_location_assignment PIN_A13 -to red[0]
+set_location_assignment PIN_C13 -to red[1]
+set_location_assignment PIN_E13 -to red[2]
+set_location_assignment PIN_B12 -to red[3]
+set_location_assignment PIN_C12 -to red[4]
+set_location_assignment PIN_D12 -to red[5]
+set_location_assignment PIN_E12 -to red[6]
+set_location_assignment PIN_F13 -to red[7]
+set_location_assignment PIN_A11 -to vgaClk
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

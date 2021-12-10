@@ -55,6 +55,7 @@ JUC %r0
     JPT .gameLogic %r0      # gameLogic();
     JPT .retAddr1 %r1       #
     JUC %r0                 #
+
 .retAddr1                   #
 
     ANDI $0 %r14            # debugPosition = 7;
@@ -63,6 +64,7 @@ JUC %r0
     JPT .routineLoop %r0    # gameLogic();
     JPT .retAddr2 %r1       #
     JUC %r0                 #
+
 .retAddr2               #
 
     JPT .routineLoop %r0    # }
@@ -76,39 +78,50 @@ JUC %r0
     ANDI $0 %r14            # debugPosition = 2;
     ADDI $2 %r14            #
 
+    JPT .moveRight %r10     #
                             #//Move paddle if correct button being pressed down.
+
+    ANDI $0 %r3             # if(buttonDown == rightButton) {
+    ADDI $127 %r3           #
+    CMP %r15 %r3            #
+    JEQ %r10                #
 
     ANDI $0 %r3             # if(buttonDown == leftButton) {
     ADDI $127 %r3           #
     ADDI $64 %r3            #
+
+
+    JPT .moveLeft %r10
     CMP %r15 %r3            #
-    JPT .notLeft %r0        #
-    JNE %r0                 #
+    JEQ %r10
 
+    JUC %r0
 
-    ANDI $0 %r14            # debugPosition = 10;
-    ADDI $10 %r14            #
-
+.moveLeft
     ANDI $0 %r14            # debugPosition = 3;
     ADDI $3 %r14            #
-    
+
     SUBI $1 %r2             # paddlePosition--; //Adjust paddle speed here.
 
-    JPT .notRight %r0       # }
-    JUC %r0                 #
-.notLeft                    #
+    JPT .storePosition %r11
+    JUC %r11
 
+#    JPT .moveRight %r0       # }
+#    JUC %r0                 #
 
-    ANDI $0 %r3             # else if(buttonDown == rightButton) {
-    ADDI $127 %r3           #
-    CMP %r15 %r3            #
-    JPT .notRight %r0       #
-    JNE %r0                 #
+.moveRight                    #
+
+ 
+#    JPT .notRight %r0       #
+#    JNE %r0                 #
 
     ANDI $0 %r14            # debugPosition = 4;
     ADDI $4 %r14            #
     
     ADDI $1 %r2             # paddlePosition++; //Adjust paddle speed here.
+
+    JPT .storePosition %r11
+    JUC %r11
 
 .notRight                   # }
 
@@ -123,6 +136,9 @@ JUC %r0
     ADDI $5 %r14            #
 
     ANDI $0 %r2             # paddlePosition = 0;
+
+    JPT .storePosition %r11
+    JUC %r11
     
 .notOffLeft                 # }
 
@@ -140,19 +156,14 @@ JUC %r0
 
     ANDI $0 %r2             # paddlePosition = 479;
     ADD %r2 %r3             #
+    JPT .storePosition %r11
+    JUC %r11
+    
 
 .notOffRight                # }
 
+.storePosition
     STOR %r2 %r4            # store m[960]
+    JUC %r0
 
-JUC %r1                     # }
-
-
-
-
-
-.gameDraw                   # gameDraw() {
-
-                            #// Add code to draw paddle with VGA here.
-
-JUC %r1                     # }
+# JUC %r1                     # }
