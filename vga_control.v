@@ -73,10 +73,21 @@ module vga_control (
     end
     
     always @(hcount, vcount) begin
+//				if (mem_in > 239) begin 
+//				 h_range_i = 239 + 100; 
+//				end 
+//				if (mem_in < 239) begin 
+//				 h_range_i = 239 - 100; 
+//				end 
+//				
+//				if (mem_in == 239) begin 
+//				 h_range_i = 239; 
+//				end 
              h_range_i = mem_in; 
+				 //h_range_i = 450; 
              h_range_e =  h_range_i + 8'b10100000; 
             if(vcount > 410 && vcount < 420 && hcount > h_range_i && hcount < h_range_e) begin 
-                   red = 8'd255;
+                red = 8'd255;
                 green = 8'd255;
                 blue = 8'd255;
                      end 
@@ -84,7 +95,7 @@ module vga_control (
                 red = 8'd12;
                 green = 8'd1;
                 blue = 8'd181;
-                     end
+                end
         end
     
     always @(hcount,vcount) begin
